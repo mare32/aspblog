@@ -4,6 +4,8 @@ using Blog.Application.UseCases.DTO;
 using Blog.DataAccess;
 using Blog.Domain;
 using Blog.Domain.Entities;
+using Blog.Implementation.Validators;
+using FluentValidation;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,10 +16,12 @@ namespace Blog.Implementation.UseCases.Commands
 {
     public class EfCreateVoteCommand : EfUseCase, ICreateVoteCommand
     {
+        EfCreateVoteValidator _validator;
         private IApplicationUser _user;
-        public EfCreateVoteCommand(BlogContext context,IApplicationUser user) : base(context)
+        public EfCreateVoteCommand(BlogContext context, IApplicationUser user, EfCreateVoteValidator validator) : base(context)
         {
             _user = user;
+            _validator = validator;
         }
 
         public int Id => 2014;
@@ -28,10 +32,9 @@ namespace Blog.Implementation.UseCases.Commands
 
         public void Execute(VoteDto dto)
         {
-            // _validator.ValidateAndThrow(dto);
+            _validator.ValidateAndThrow(dto);
             int? postId = null;
             int? commId = null;
-            // Ukoliko je vec glasao, ne moze opet isto
             Vote postojeciVote = new Vote();
             Vote vote = new Vote();
             if (dto.BlogPostId.HasValue && dto.CommentId.HasValue)
