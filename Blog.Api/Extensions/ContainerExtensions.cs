@@ -114,6 +114,7 @@ namespace Blog.Api.Extensions
             services.AddTransient<EfCreateCommentValidator>();
             services.AddTransient<EfCreateVoteValidator>();
             services.AddTransient<UpdateUserProfileValidator>();
+            services.AddTransient<PatchBlogPostValidator>();
             #endregion
         }
 
