@@ -2,6 +2,8 @@
 using Blog.Application.UseCases.DTO;
 using Blog.DataAccess;
 using Blog.Domain.Entities;
+using Blog.Implementation.Validators;
+using FluentValidation;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,9 +14,10 @@ namespace Blog.Implementation.UseCases.Commands
 {
     public class EfUpdateBlogPostCategoriesCommand : EfUseCase, IUpdateBlogPostCategoriesCommand
     {
-        // validator
-        public EfUpdateBlogPostCategoriesCommand(BlogContext context) : base(context)
+        UpdateBlogPostCategoriesValidator _validator;
+        public EfUpdateBlogPostCategoriesCommand(BlogContext context, UpdateBlogPostCategoriesValidator validator) : base(context)
         {
+            _validator = validator;
         }
 
         public int Id => 2019;
@@ -25,7 +28,7 @@ namespace Blog.Implementation.UseCases.Commands
 
         public void Execute(UpdateBlogPostCategoriesDto request)
         {
-            // validator
+            _validator.ValidateAndThrow(request);
 
             var blogPostCategories = Context.BlogPostCategories.Where(x => x.PostId == request.BlogPostId);
             Context.BlogPostCategories.RemoveRange(blogPostCategories);
