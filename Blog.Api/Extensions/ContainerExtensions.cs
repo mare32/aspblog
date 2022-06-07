@@ -112,6 +112,7 @@ namespace Blog.Api.Extensions
             services.AddTransient<SearchUseCaseLogsValidator>();
             services.AddTransient<EfUpdateUserUseCasesValidator>();
             services.AddTransient<EfCreateCommentValidator>();
+            services.AddTransient<EfCreateVoteValidator>();
             #endregion
         }
 
