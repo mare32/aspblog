@@ -2,6 +2,8 @@
 using Blog.Application.UseCases.DTO;
 using Blog.DataAccess;
 using Blog.Domain;
+using Blog.Implementation.Validators;
+using FluentValidation;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,10 +15,11 @@ namespace Blog.Implementation.UseCases.Commands
     public class EfUpdateUserProfileCommand : EfUseCase, IUpdateUserProfileCommand
     {
         IApplicationUser _user;
-        // validator
-        public EfUpdateUserProfileCommand(BlogContext context,IApplicationUser user) : base(context)
+        UpdateUserProfileValidator _validator;
+        public EfUpdateUserProfileCommand(BlogContext context, IApplicationUser user, UpdateUserProfileValidator validator) : base(context)
         {
             _user = user;
+            _validator = validator;
         }
 
         public int Id => 2020;
@@ -27,8 +30,8 @@ namespace Blog.Implementation.UseCases.Commands
 
         public void Execute(UpdateUserProfileDto dto)
         {
-            // validator
-            var user = Context.Users.FirstOrDefault(x => x.Id == _user.Id);
+            
+           var user = Context.Users.FirstOrDefault(x => x.Id == _user.Id);
             if(dto.Username != null)
             {
                 user.Username = dto.Username;
@@ -51,6 +54,7 @@ namespace Blog.Implementation.UseCases.Commands
                 user.Password = dto.Password;
             }
             user.UpdatedAt = DateTime.Now;
+            _validator.ValidateAndThrow(user);
             Context.Users.Update(user);
             Context.SaveChanges();
         }
