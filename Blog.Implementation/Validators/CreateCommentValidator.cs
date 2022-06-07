@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace Blog.Implementation.Validators
 {
-    public class EfCreateCommentValidator : AbstractValidator<CommentDto>
+    public class CreateCommentValidator : AbstractValidator<CommentDto>
     {
-        public EfCreateCommentValidator(BlogContext context)
+        public CreateCommentValidator(BlogContext context)
         {
             RuleFor( x => x.CommentText).Cascade(CascadeMode.Stop)
                                         .NotEmpty().WithMessage("Polje komentara ne sme ostati prazno");

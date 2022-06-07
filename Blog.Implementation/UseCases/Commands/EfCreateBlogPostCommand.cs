@@ -15,8 +15,8 @@ namespace Blog.Implementation.UseCases.Commands
 {
     public class EfCreateBlogPostCommand : EfUseCase, ICreateBlogPostCommand
     {
-        private EfCreateBlogPostValidator _validator;
-        public EfCreateBlogPostCommand(BlogContext context, EfCreateBlogPostValidator validator) : base(context)
+        private CreateBlogPostValidator _validator;
+        public EfCreateBlogPostCommand(BlogContext context, CreateBlogPostValidator validator) : base(context)
         {
             _validator = validator;
         }

@@ -9,10 +9,10 @@ using System.Threading.Tasks;
 
 namespace Blog.Implementation.Validators
 {
-    public class EfRegisterUserValidator : AbstractValidator<RegisterDto>
+    public class RegisterUserValidator : AbstractValidator<RegisterDto>
     {
         private BlogContext _context;
-        public EfRegisterUserValidator(BlogContext context)
+        public RegisterUserValidator(BlogContext context)
         {
             var imePrezimeRegex = @"^[A-Z][a-z]{2,}(\s[A-Z][a-z]{2,})?$";
             RuleFor(x => x.FirstName)

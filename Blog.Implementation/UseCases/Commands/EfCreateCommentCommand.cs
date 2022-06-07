@@ -16,10 +16,10 @@ namespace Blog.Implementation.UseCases.Commands
 {
     public class EfCreateCommentCommand : EfUseCase, ICreateCommentCommand
     {
-        private EfCreateCommentValidator _validator;
+        private CreateCommentValidator _validator;
         private IApplicationUser _user;
         public EfCreateCommentCommand(BlogContext context,
-                                        EfCreateCommentValidator validator,
+                                        CreateCommentValidator validator,
                                         IApplicationUser user) : base(context)
         {
             _validator = validator;

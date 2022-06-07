@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace Blog.Implementation.Validators
 {
-    public class EfCreateVoteValidator : AbstractValidator<VoteDto>
+    public class CreateVoteValidator : AbstractValidator<VoteDto>
     {
-        public EfCreateVoteValidator()
+        public CreateVoteValidator()
         {
             RuleFor(x => x.VoteType).Cascade(CascadeMode.Stop)
                                      .NotEmpty().WithMessage("Polje VoteType ne sme ostati prazno")

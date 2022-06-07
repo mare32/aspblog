@@ -16,9 +16,9 @@ namespace Blog.Implementation.UseCases.Commands
 {
     public class EfCreateVoteCommand : EfUseCase, ICreateVoteCommand
     {
-        EfCreateVoteValidator _validator;
+        CreateVoteValidator _validator;
         private IApplicationUser _user;
-        public EfCreateVoteCommand(BlogContext context, IApplicationUser user, EfCreateVoteValidator validator) : base(context)
+        public EfCreateVoteCommand(BlogContext context, IApplicationUser user, CreateVoteValidator validator) : base(context)
         {
             _user = user;
             _validator = validator;

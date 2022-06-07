@@ -14,8 +14,8 @@ namespace Blog.Implementation.UseCases.Commands
 {
     public class EfUpdateUserUseCasesCommand : EfUseCase, IUpdateUserUseCasesCommand
     {
-        EfUpdateUserUseCasesValidator _validator;
-        public EfUpdateUserUseCasesCommand(BlogContext context, EfUpdateUserUseCasesValidator validator) : base(context)
+        UpdateUserUseCasesValidator _validator;
+        public EfUpdateUserUseCasesCommand(BlogContext context, UpdateUserUseCasesValidator validator) : base(context)
         {
             _validator = validator;
         }

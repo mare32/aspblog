@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace Blog.Implementation.Validators
 {
-    public class EfUpdateUserUseCasesValidator : AbstractValidator<UpdateUserUseCasesDto>
+    public class UpdateUserUseCasesValidator : AbstractValidator<UpdateUserUseCasesDto>
     {
-        public EfUpdateUserUseCasesValidator(BlogContext context)
+        public UpdateUserUseCasesValidator(BlogContext context)
         {
             RuleFor(x => x.UserId)
                 .Cascade(CascadeMode.Stop)

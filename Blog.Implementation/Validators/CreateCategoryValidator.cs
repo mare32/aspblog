@@ -9,10 +9,10 @@ using System.Threading.Tasks;
 
 namespace Blog.Implementation.Validators
 {
-    public class EfCreateCategoryValidator : AbstractValidator<CategoryDto>
+    public class CreateCategoryValidator : AbstractValidator<CategoryDto>
     {
         private BlogContext _context;
-        public EfCreateCategoryValidator(BlogContext context)
+        public CreateCategoryValidator(BlogContext context)
         {
             RuleFor(x => x.Name)
                 .Cascade(CascadeMode.Stop)

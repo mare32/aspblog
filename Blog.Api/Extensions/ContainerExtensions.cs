@@ -106,13 +106,13 @@ namespace Blog.Api.Extensions
             #endregion
 
             #region Validators
-            services.AddTransient<EfRegisterUserValidator>();
-            services.AddTransient<EfCreateCategoryValidator>();
-            services.AddTransient<EfCreateBlogPostValidator>();
+            services.AddTransient<RegisterUserValidator>();
+            services.AddTransient<CreateCategoryValidator>();
+            services.AddTransient<CreateBlogPostValidator>();
             services.AddTransient<SearchUseCaseLogsValidator>();
-            services.AddTransient<EfUpdateUserUseCasesValidator>();
-            services.AddTransient<EfCreateCommentValidator>();
-            services.AddTransient<EfCreateVoteValidator>();
+            services.AddTransient<UpdateUserUseCasesValidator>();
+            services.AddTransient<CreateCommentValidator>();
+            services.AddTransient<CreateVoteValidator>();
             services.AddTransient<UpdateUserProfileValidator>();
             services.AddTransient<PatchBlogPostValidator>();
             services.AddTransient<UpdateBlogPostCategoriesValidator>();

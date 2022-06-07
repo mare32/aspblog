@@ -16,10 +16,10 @@ namespace Blog.Implementation.UseCases.Commands
 {
     public class EfCreateCategoryCommand : EfUseCase, ICreateCategoryCommand
     {
-        private EfCreateCategoryValidator _validator;
+        private CreateCategoryValidator _validator;
         public EfCreateCategoryCommand(
             BlogContext context,
-            EfCreateCategoryValidator validator) : base(context)
+            CreateCategoryValidator validator) : base(context)
         {
             _validator = validator;
         }

@@ -15,9 +15,9 @@ namespace Blog.Implementation.UseCases.Commands
 {
     public class EfRegisterUserCommand : EfUseCase, IRegisterUserCommand
     {
-        private EfRegisterUserValidator _validator;
+        private RegisterUserValidator _validator;
         private readonly IEmailSender _sender;
-        public EfRegisterUserCommand(BlogContext context, EfRegisterUserValidator validator, IEmailSender sender) : base(context)
+        public EfRegisterUserCommand(BlogContext context, RegisterUserValidator validator, IEmailSender sender) : base(context)
         {
             _sender = sender;
             _validator = validator;
