@@ -4,6 +4,8 @@ using Blog.Application.UseCases.DTO;
 using Blog.DataAccess;
 using Blog.Domain;
 using Blog.Domain.Entities;
+using Blog.Implementation.Validators;
+using FluentValidation;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,13 +16,13 @@ namespace Blog.Implementation.UseCases.Commands
 {
     public class EfCreateCommentCommand : EfUseCase, ICreateCommentCommand
     {
-        // private EfCreateCommentValidator _validator;
+        private EfCreateCommentValidator _validator;
         private IApplicationUser _user;
         public EfCreateCommentCommand(BlogContext context,
-                                        //EfCreateCommentValidator validator,
+                                        EfCreateCommentValidator validator,
                                         IApplicationUser user) : base(context)
         {
-            // _validator = validator;
+            _validator = validator;
             _user = user;
         }
 
@@ -33,11 +35,7 @@ namespace Blog.Implementation.UseCases.Commands
         public void Execute(CommentDto dto)
         {
             int? parentId = null;
-            // _validator.ValidateAndThrow(dto);
-            if(!Context.BlogPosts.Any(x => x.Id == dto.BlogPostId))
-            {
-                throw new EntityNotFoundException(nameof(BlogPost), dto.BlogPostId);
-            }
+            _validator.ValidateAndThrow(dto);
             if(dto.ParentId.HasValue)
                 parentId = dto.ParentId.Value;
             var newComment = new Comment
