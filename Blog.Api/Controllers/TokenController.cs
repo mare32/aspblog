@@ -18,7 +18,22 @@ namespace Blog.Api.Controllers
         {
             _manager = manager;
         }
-
+        /// <summary>
+        /// Generate JWT
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///  POST /api/token
+        ///   {
+        ///  "email": "pera@gmail.com",
+        ///  "password": "lozinka"
+        ///    }
+        /// </remarks>
+        /// <response code="401">Unauthorized.</response>
+        /// <response code="500">Unexpected server error.</response>
         [HttpPost]
         [AllowAnonymous]
         public IActionResult Post([FromBody] TokenRequest request)
