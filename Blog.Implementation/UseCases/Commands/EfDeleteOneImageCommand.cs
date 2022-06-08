@@ -1,5 +1,7 @@
-﻿using Blog.Application.UseCases.Commands;
+﻿using Blog.Application.Exceptions;
+using Blog.Application.UseCases.Commands;
 using Blog.DataAccess;
+using Blog.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -23,11 +25,14 @@ namespace Blog.Implementation.UseCases.Commands
 
         public void Execute(int imageId)
         {
-            // validator
             var image = Context.Images.FirstOrDefault(x => x.Id == imageId);
             if(Context.BlogPosts.Any( x => x.CoverImage == imageId))
             {
                 throw new Exception("Ova slika se koristi kao CoverImage za neku objavu, prvo to promenite");
+            }
+            if (!Context.Images.Any(x => x.Id == imageId))
+            {
+                throw new EntityNotFoundException(nameof(Image),imageId);
             }
             File.Delete(image.Src);
             var blogPostImgToDelete = Context.BlogPostImages.FirstOrDefault(x => x.ImageId == imageId);

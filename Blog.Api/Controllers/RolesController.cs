@@ -26,7 +26,7 @@ namespace Blog.Api.Controllers
         /// <remarks>
         /// Sample request:
         ///
-        ///  POST /api/token
+        ///  GET /api/roles
         ///  QueryString
         ///  "keyword": "admin"
         ///  
