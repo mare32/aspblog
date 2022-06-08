@@ -20,14 +20,43 @@ namespace Blog.Api.Controllers
         {
             _handler = handler;
         }
-        // GET: api/<CategoriesController>
+        /// <summary>
+        /// Search categories.
+        /// </summary>
+        /// <param name="search"></param>
+        /// <param name="command"></param>
+        /// <returns>Array of categories</returns>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///  GET /api/Categories
+        ///   QueryString
+        ///  "perPage": 5,
+        ///  "page": 1,
+        ///  "keyword": "t"
+        ///
+        /// </remarks>
+        /// <response code="500">Unexpected server error.</response>
         [HttpGet]
         public IActionResult Get([FromQuery] BasePagedSearch search, [FromServices] IGetCategoriesQuery query)
         {
             return Ok(_handler.HandleQuery(query,search));
         }
 
-        // GET api/<CategoriesController>/5
+        /// <summary>
+        /// Shows a category.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="command"></param>
+        /// <returns>Category</returns>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///  GET api/categories/5
+        ///
+        /// </remarks>
+        /// <response code="404">Entity not found.</response>
+        /// <response code="500">Unexpected server error.</response>
         [HttpGet("{id}")]
         public string Get(int id)
         {
@@ -39,7 +68,7 @@ namespace Blog.Api.Controllers
         /// </summary>
         /// <param name="dto"></param>
         /// <param name="command"></param>
-        /// <returns></returns>
+        /// <returns>HttpResponseMessage</returns>
         /// <remarks>
         /// Sample request:
         ///
@@ -53,14 +82,36 @@ namespace Blog.Api.Controllers
         /// <response code="422">Validation failure.</response>
         /// <response code="500">Unexpected server error.</response>
         [HttpPost]
+        [ProducesResponseType(201)]
+        [ProducesResponseType(422)]
+        [ProducesResponseType(500)]
         public IActionResult Post([FromBody] CategoryDto dto, [FromServices] ICreateCategoryCommand command)
         {
             _handler.HandleCommand(command, dto);
             return StatusCode(201);
         }
+        /// <summary>
+        /// Deletes a category.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="command"></param>
+        /// <returns>HttpResponseMessage</returns>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///  DELETE api/categories/5
+        ///
+        /// </remarks>
+        /// <response code="204">No Content.</response>
+        /// <response code="404">Entity not found.</response>
+        /// <response code="409">Conflict. Category is used by blog posts.</response>
+        /// <response code="500">Unexpected server error.</response>
 
-        // DELETE api/categories/5
         [HttpDelete("{id}")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(409)]
+        [ProducesResponseType(500)]
         public IActionResult Delete(int id, [FromServices] IDeleteCategoryCommand command)
         {
             _handler.HandleCommand(command, id);
