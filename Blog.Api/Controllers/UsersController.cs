@@ -47,15 +47,6 @@ namespace Blog.Api.Controllers
         [HttpDelete("{id}")]
         public IActionResult Delete(int id, [FromServices]IDeleteUserCommand command)
         {
-            //var blogPostController = new BlogPostsController(_handler, _user);
-            //var blogPosts = _context.BlogPosts.Where(x => x.AuthorId == id);
-            //if(blogPosts != null)
-            //{
-            //    foreach(var post in blogPosts)
-            //    {
-            //        blogPostController.Delete(post.Id, new EfDeleteBlogPostCommand(_context,_user));
-            //    }
-            //}
             _handler.HandleCommand(command, id);
             return NoContent();
         }

@@ -34,7 +34,24 @@ namespace Blog.Api.Controllers
             return "value";
         }
 
-        // POST api/<CategoriesController>
+        /// <summary>
+        /// Creates new category.
+        /// </summary>
+        /// <param name="dto"></param>
+        /// <param name="command"></param>
+        /// <returns></returns>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     POST /api/Categories
+        ///     {
+        ///        "name": "Nova Kategorija"
+        ///     }
+        ///
+        /// </remarks>
+        /// <response code="201">Successfull creation.</response>
+        /// <response code="422">Validation failure.</response>
+        /// <response code="500">Unexpected server error.</response>
         [HttpPost]
         public IActionResult Post([FromBody] CategoryDto dto, [FromServices] ICreateCategoryCommand command)
         {
