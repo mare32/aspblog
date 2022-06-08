@@ -17,6 +17,26 @@ namespace Blog.Api.Controllers
         {
             _handler = handler;
         }
+
+        /// <summary>
+        /// Change users role
+        /// </summary>
+        /// <param name="dto"></param>
+        /// <param name="command"></param>
+        /// <returns></returns>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///  PATCH /api/admin
+        ///  {
+        ///  "roleId": 1,
+        ///  "userId": 3
+        ///  }
+        /// </remarks>
+        /// <response code="401">Unauthorized.</response>
+        /// <response code="404">Entity not found.</response>
+        /// <response code="409">Conflict. Either user already has that role or you are trying to change your own role.</response>
+        /// <response code="500">Unexpected server error.</response>
         [HttpPatch]
         public IActionResult ChangeUserRole([FromBody] ChangeRoleDto dto, [FromServices] IChangeUserRoleCommand command)
         {
