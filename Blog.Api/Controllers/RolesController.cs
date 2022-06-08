@@ -17,6 +17,22 @@ namespace Blog.Api.Controllers
         {
             _handler = handler;
         }
+        /// <summary>
+        /// Search roles without pagination
+        /// </summary>
+        /// <param name="search"></param>
+        /// <param name="query"></param>
+        /// <returns></returns>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///  POST /api/token
+        ///  QueryString
+        ///  "keyword": "admin"
+        ///  
+        /// </remarks>
+        /// <response code="401">Unauthorized.</response>
+        /// <response code="500">Unexpected server error.</response>
         [HttpGet]
         public IActionResult Get([FromQuery] BaseSearch search,[FromServices]ISearchRolesQuery query)
         {
