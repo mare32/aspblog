@@ -29,28 +29,100 @@ namespace Blog.Api.Controllers
             _handler = handler;
         }
 
-        // GET: api/<UsersController>
+        /// <summary>
+        /// Search users.
+        /// </summary>
+        /// <param name="search"></param>
+        /// <param name="query"></param>
+        /// <returns>Array of categories</returns>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///  GET /api/users
+        ///   QueryString
+        ///  "perPage": 5,
+        ///  "page": 1,
+        ///  "keyword": "a"
+        ///
+        /// </remarks>
+        /// <response code="401">Unauthorized.</response>
+        /// <response code="500">Unexpected server error.</response>
         [HttpGet]
         public IActionResult Get([FromQuery] BasePagedSearch search, [FromServices] ISearchUsersQuery query)
         {
             return Ok(_handler.HandleQuery(query, search));
         }
 
-        // GET api/users/1
+        /// <summary>
+        /// Shows a user.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>User</returns>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///  GET api/users/5
+        ///
+        /// </remarks>
+        /// <response code="401">Unauthorized.</response>
+        /// <response code="404">Entity not found.</response>
+        /// <response code="500">Unexpected server error.</response>
         [HttpGet("{id}")]
         public IActionResult Get(int id, [FromServices] IGetOneUserQuery query)
         {
             return Ok(_handler.HandleQuery(query, id));
         }
 
-        // DELETE api/<UsersController>/5
+        /// <summary>
+        /// Deletes a user
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="command"></param>
+        /// <returns>HttpResponseMessage</returns>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///  DELETE api/users/5
+        ///
+        /// </remarks>
+        /// <response code="204">No Content.</response>
+        /// <response code="401">Unauthorized.</response>
+        /// <response code="404">Entity not found.</response>
+        /// <response code="500">Unexpected server error.</response>
+
         [HttpDelete("{id}")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(401)]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(500)]
         public IActionResult Delete(int id, [FromServices]IDeleteUserCommand command)
         {
             _handler.HandleCommand(command, id);
             return NoContent();
         }
-        
+
+        /// <summary>
+        /// Update user
+        /// </summary>
+        /// <param name="dto"></param>
+        /// <param name="command"></param>
+        /// <returns></returns>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///  PATCH /api/users
+        ///  {
+        ///  "id":2
+        ///  "firstname": "null",
+        ///  "lastname": "NewLastName",
+        ///  "username": "NewUserName",
+        ///  "email" : "null",
+        ///  "password" : "null"
+        ///  }
+        /// </remarks>
+        /// <response code="401">Unauthorized.</response>
+        /// <response code="404">Entity not found.</response>
+        /// <response code="500">Unexpected server error.</response>
         [HttpPatch]
         public IActionResult UpdateUserProfile([FromBody]UpdateUserProfileDto dto, [FromServices]IUpdateUserProfileCommand command)
         {
