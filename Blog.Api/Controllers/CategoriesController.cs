@@ -77,7 +77,7 @@ namespace Blog.Api.Controllers
         ///     }
         ///
         /// </remarks>
-        /// <response code="201">Successfull creation.</response>
+        /// <response code="201">Created.</response>
         /// <response code="401">Unauthorized.</response>
         /// <response code="422">Validation failure.</response>
         /// <response code="500">Unexpected server error.</response>

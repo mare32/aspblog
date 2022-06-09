@@ -23,40 +23,33 @@ namespace Blog.Api.Controllers
             _user = user;
         }
 
-        // GET: api/<BlogPostImagesController>
-        [HttpGet]
-        public IEnumerable<string> Get()
-        {
-            return new string[] { "value1", "value2" };
-        }
-
-        // GET api/<BlogPostImagesController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
-        {
-            return "value";
-        }
-
-        // POST api/<BlogPostImagesController>
+        /// <summary>
+        /// Adds an image to a blog post.
+        /// </summary>
+        /// <param name="dto"></param>
+        /// <param name="command"></param>
+        /// <returns>HttpResponseMessage</returns>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     POST /api/Categories
+        ///     {
+        ///        "image": "fileUpload",
+        ///        "blogPostId": 2
+        ///     }
+        ///
+        /// </remarks>
+        /// <response code="201">Created.</response>
+        /// <response code="401">Unauthorized.</response>
+        /// <response code="500">Unexpected server error.</response>
         [HttpPost]
+        [ProducesResponseType(201)]
+        [ProducesResponseType(401)]
+        [ProducesResponseType(500)]
         public IActionResult Post([FromForm] ImageDto dto, [FromServices] IAddImageToBlogPostCommand command)
         {
             _handler.HandleCommand(command, dto);
             return StatusCode(201);
-        }
-
-        // PUT api/<BlogPostImagesController>
-        [HttpPut]
-        public IActionResult Put()
-        {
-            // 5 je postId a kroz body dolaze slike i altovi a nmg tri parametrra da imam
-            return Ok();
-        }
-
-        // DELETE api/<BlogPostImagesController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
         }
     }
 }
