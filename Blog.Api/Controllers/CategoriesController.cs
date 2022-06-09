@@ -24,7 +24,7 @@ namespace Blog.Api.Controllers
         /// Search categories.
         /// </summary>
         /// <param name="search"></param>
-        /// <param name="command"></param>
+        /// <param name="query"></param>
         /// <returns>Array of categories</returns>
         /// <remarks>
         /// Sample request:
@@ -47,7 +47,6 @@ namespace Blog.Api.Controllers
         /// Shows a category.
         /// </summary>
         /// <param name="id"></param>
-        /// <param name="command"></param>
         /// <returns>Category</returns>
         /// <remarks>
         /// Sample request:
@@ -78,8 +77,8 @@ namespace Blog.Api.Controllers
         ///     }
         ///
         /// </remarks>
-        /// <response code="401">Unauthorized.</response>
         /// <response code="201">Successfull creation.</response>
+        /// <response code="401">Unauthorized.</response>
         /// <response code="422">Validation failure.</response>
         /// <response code="500">Unexpected server error.</response>
         [HttpPost]
@@ -104,8 +103,8 @@ namespace Blog.Api.Controllers
         ///  DELETE api/categories/5
         ///
         /// </remarks>
-        /// <response code="401">Unauthorized.</response>
         /// <response code="204">No Content.</response>
+        /// <response code="401">Unauthorized.</response>
         /// <response code="404">Entity not found.</response>
         /// <response code="409">Conflict. Category is used by blog posts.</response>
         /// <response code="500">Unexpected server error.</response>

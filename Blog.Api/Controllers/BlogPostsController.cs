@@ -29,7 +29,23 @@ namespace Blog.Api.Controllers
             _handler = handler;
             _user = user;
         }
-        // GET: api/<BlogPostsController>
+        /// <summary>
+        /// Search blog posts.
+        /// </summary>
+        /// <param name="search"></param>
+        /// <param name="query"></param>
+        /// <returns>Array of posts</returns>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///  GET /api/blogposts
+        ///   QueryString
+        ///  "perPage": 5,
+        ///  "page": 1,
+        ///  "keyword": "p"
+        ///
+        /// </remarks>
+        /// <response code="500">Unexpected server error.</response>
         [HttpGet]
         public IActionResult Get([FromQuery] BasePagedSearch search, [FromServices] ISearchBlogPostsQuery query)
         {
@@ -37,15 +53,53 @@ namespace Blog.Api.Controllers
             return Ok(_handler.HandleQuery(query,search));
         }
 
-        // GET api/<BlogPostsController>/5
+        /// <summary>
+        /// Shows a blog post.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>Blog post</returns>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///  GET api/blogposts/5
+        ///
+        /// </remarks>
+        /// <response code="404">Entity not found.</response>
+        /// <response code="500">Unexpected server error.</response>
         [HttpGet("{id}")]
         public IActionResult Get(int id, [FromServices] IGetOneBlogPostQuery query)
         {
             return Ok(_handler.HandleQuery(query,id));
         }
 
-        // POST api/<BlogPostsController>
+        /// <summary>
+        /// Creates new blog post.
+        /// </summary>
+        /// <param name="dto"></param>
+        /// <param name="command"></param>
+        /// <returns>HttpResponseMessage</returns>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     POST /api/blogposts
+        ///     {
+        ///        "image": "*fileUploadField*",
+        ///        "title" : "Example",
+        ///        "blogPostContent" : "Example gratia",
+        ///        "categoryIds" : [ 2, 5 ,7],
+        ///        "imageAlt" : "Example alternative"
+        ///     }
+        ///
+        /// </remarks>
+        /// <response code="201">Successfull creation.</response>
+        /// <response code="401">Unauthorized.</response>
+        /// <response code="422">Validation failure.</response>
+        /// <response code="500">Unexpected server error.</response>
         [HttpPost]
+        [ProducesResponseType(201)]
+        [ProducesResponseType(401)]
+        [ProducesResponseType(422)]
+        [ProducesResponseType(500)]
         public IActionResult Post([FromForm]CreateBlogPostWithImageDto dto,[FromServices]ICreateBlogPostCommand command)
         {
 
@@ -85,14 +139,55 @@ namespace Blog.Api.Controllers
             return StatusCode(201);
         }
 
-        // DELETE api/<BlogPostsController>/5
+        /// <summary>
+        /// Deletes a blog post.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="command"></param>
+        /// <returns>HttpResponseMessage</returns>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///  DELETE api/blogposts/5
+        ///
+        /// </remarks>
+        /// <response code="204">No Content.</response>
+        /// <response code="401">Unauthorized.</response>
+        /// <response code="404">Entity not found.</response>
+        /// <response code="500">Unexpected server error.</response>
+
         [HttpDelete("{id}")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(401)]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(500)]
         public IActionResult Delete(int id, [FromServices]IDeleteBlogPostCommand command)
         {
             _handler.HandleCommand(command, id);
             return NoContent();
         }
 
+
+        /// <summary>
+        /// Update blog post
+        /// </summary>
+        /// <param name="dto"></param>
+        /// <param name="command"></param>
+        /// <returns></returns>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///  PATCH /api/blogposts
+        ///  {
+        ///  "id":2
+        ///  "title": "New title",
+        ///  "blogPostContent": "New content",
+        ///  "coverImgId" : 2005
+        ///  }
+        /// </remarks>
+        /// <response code="401">Unauthorized.</response>
+        /// <response code="404">Entity not found.</response>
+        /// <response code="500">Unexpected server error.</response>
         [HttpPatch]
         public IActionResult Patch([FromBody] PatchBlogPostDto dto, [FromServices]IPatchBlogPostCommand command)
         {
