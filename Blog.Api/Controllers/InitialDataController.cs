@@ -13,7 +13,18 @@ namespace Blog.Api.Controllers
     public class InitialDataController : ControllerBase
     {
 
-        // POST api/<InitialDataController>
+        /// <summary>
+        /// Posted the initial date when I started this project(Not for use currently)
+        /// </summary>
+        /// <returns></returns>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///  POST api/initialData
+        ///
+        /// </remarks>
+        /// <response code="401">Unauthorized.</response>
+        /// <response code="500">Unexpected server error.</response>
         [HttpPost]
         public IActionResult Post()
         {
