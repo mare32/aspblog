@@ -17,14 +17,61 @@ namespace Blog.Api.Controllers
         {
             _handler = handler;
         }
-
+        /// <summary>
+        /// Cast a vote
+        /// </summary>
+        /// <param name="dto"></param>
+        /// <param name="command"></param>
+        /// <returns></returns>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///  PUT /api/votes
+        ///  {
+        ///  "blogPostId": 2,
+        ///  "voteType": 1
+        ///  }
+        ///  {
+        ///  "commentId": 2001,
+        ///  "voteType": 2
+        ///  }
+        /// </remarks>
+        /// <response code="204">No content.</response>
+        /// <response code="401">Unauthorized.</response>
+        /// <response code="409">Conflict.</response>
+        /// <response code="500">Unexpected server error.</response>
         [HttpPut]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(401)]
+        [ProducesResponseType(409)]
+        [ProducesResponseType(500)]
         public IActionResult Put([FromBody] VoteDto dto, [FromServices] ICreateVoteCommand command )
         {
             _handler.HandleCommand(command, dto);
             return NoContent();
         }
+
+        /// <summary>
+        /// Deletes a vote
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="command"></param>
+        /// <returns>HttpResponseMessage</returns>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///  DELETE api/votes/5
+        ///
+        /// </remarks>
+        /// <response code="204">No Content.</response>
+        /// <response code="401">Unauthorized.</response>
+        /// <response code="404">Entity not found.</response>
+        /// <response code="500">Unexpected server error.</response>
         [HttpDelete("{id}")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(401)]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(500)]
         public IActionResult Delete(int id, [FromServices]IDeleteVoteCommand command)
         {
             _handler.HandleCommand(command, id);
