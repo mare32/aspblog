@@ -18,6 +18,24 @@ namespace Blog.Api.Controllers
         {
             _handler = handler;
         }
+
+        /// <summary>
+        /// Search use cases
+        /// </summary>
+        /// <param name="search"></param>
+        /// <param name="query"></param>
+        /// <returns></returns>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///  GET /api/usecases
+        ///  QueryString
+        ///  "keyword": "create",
+        ///  "perPage": 10,
+        ///  "page" : 2
+        /// </remarks>
+        /// <response code="401">Unauthorized.</response>
+        /// <response code="500">Unexpected server error.</response>
         [HttpGet]
         public IActionResult Get([FromQuery]BasePagedSearch search, [FromServices]ISearchUseCasesQuery query)
         {
