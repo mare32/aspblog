@@ -83,6 +83,7 @@ namespace Blog.Api.Extensions
             services.AddTransient<IShowCommentsQuery, EfShowCommentsQuery>();
             services.AddTransient<IGetUseCaseLogsQuery, SpGetUseCaseLogsQuery>();
             services.AddTransient<ISearchUseCasesQuery, EfSearchUseCasesQuery>();
+            services.AddTransient<IGetOneCategoryQuery, EfGetOneCategoryQuery>();
             #endregion
 
             #region Commands

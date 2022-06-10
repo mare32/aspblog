@@ -48,6 +48,7 @@ namespace Blog.Api.Controllers
         /// Shows a category.
         /// </summary>
         /// <param name="id"></param>
+        /// <param name="query"></param>
         /// <returns>Category</returns>
         /// <remarks>
         /// Sample request:
@@ -58,9 +59,9 @@ namespace Blog.Api.Controllers
         /// <response code="404">Entity not found.</response>
         /// <response code="500">Unexpected server error.</response>
         [HttpGet("{id}")]
-        public string Get(int id)
+        public IActionResult Get(int id, [FromServices]IGetOneCategoryQuery query)
         {
-            return "value";
+            return Ok(_handler.HandleQuery(query, id));
         }
 
         /// <summary>
