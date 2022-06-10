@@ -38,6 +38,7 @@ namespace Blog.Api.Controllers
         /// </remarks>
         /// <response code="500">Unexpected server error.</response>
         [HttpGet]
+        [AllowAnonymous]
         public IActionResult Get([FromQuery] BasePagedSearch search, [FromServices] IGetCategoriesQuery query)
         {
             return Ok(_handler.HandleQuery(query,search));

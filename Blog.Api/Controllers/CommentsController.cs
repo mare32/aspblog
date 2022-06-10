@@ -74,6 +74,7 @@ namespace Blog.Api.Controllers
         /// <response code="404">Entity not found.</response>
         /// <response code="500">Unexpected server error.</response>
         [HttpGet("{id}")]
+        [AllowAnonymous]
         public IActionResult GetCommentsByPostId(int id, [FromServices]IShowCommentsQuery query)
         {
             return Ok(_handler.HandleQuery(query,id));

@@ -47,6 +47,7 @@ namespace Blog.Api.Controllers
         /// </remarks>
         /// <response code="500">Unexpected server error.</response>
         [HttpGet]
+        [AllowAnonymous]
         public IActionResult Get([FromQuery] BasePagedSearch search, [FromServices] ISearchBlogPostsQuery query)
         {
 
@@ -67,6 +68,7 @@ namespace Blog.Api.Controllers
         /// <response code="404">Entity not found.</response>
         /// <response code="500">Unexpected server error.</response>
         [HttpGet("{id}")]
+        [AllowAnonymous]
         public IActionResult Get(int id, [FromServices] IGetOneBlogPostQuery query)
         {
             return Ok(_handler.HandleQuery(query,id));

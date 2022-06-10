@@ -24,6 +24,9 @@ namespace Blog.Implementation.Validators
                                 .Cascade(CascadeMode.Stop)
                                 .NotEmpty().WithMessage("Sadrzaj objave ne sme biti prazan.")
                                 .MinimumLength(3).WithMessage("Sadrzaj objave mora imati makar 3 karaktera");
+            RuleFor(x => x.CategoryIds)
+                                .NotEmpty()
+                                .WithMessage("Molim vas izaberite makar jednu kategoriju.");
             RuleForEach( x => x.CategoryIds).Must( y => _context.Categories.Any(h => h.Id == y))
                                             .WithMessage("Kategorija sa identifikatorom {PropertyValue} ne postoji.");
         }

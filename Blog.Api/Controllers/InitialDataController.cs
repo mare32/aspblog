@@ -14,7 +14,7 @@ namespace Blog.Api.Controllers
     {
 
         /// <summary>
-        /// Posted the initial date when I started this project(Not for use currently)
+        /// Posted the initial data when I started this project(Not for use currently)
         /// </summary>
         /// <returns></returns>
         /// <remarks>
