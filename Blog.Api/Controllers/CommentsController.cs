@@ -63,7 +63,7 @@ namespace Blog.Api.Controllers
         /// Shows all comments by BlogPost id
         /// </summary>
         /// <param name="id"></param>
-        /// <param name="command"></param>
+        /// <param name="query"></param>
         /// <returns>Comments</returns>
         /// <remarks>
         /// Sample request:

@@ -58,6 +58,7 @@ namespace Blog.Api.Controllers
         /// Shows a blog post.
         /// </summary>
         /// <param name="id"></param>
+        /// <param name="query"></param>
         /// <returns>Blog post</returns>
         /// <remarks>
         /// Sample request:

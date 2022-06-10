@@ -28,6 +28,7 @@ namespace Blog.Implementation.UseCases.Commands
 
         public void Execute(ChangeRoleDto dto)
         {
+            // potencijalan validator
             if(dto.UserId == _user.Id)
             {
                 throw new Exception("Ne mozete promeniti svoju ulogu.");
@@ -47,7 +48,30 @@ namespace Blog.Implementation.UseCases.Commands
             }
             user.RoleId = dto.RoleId;
             user.UpdatedAt = DateTime.Now;
-
+            if(dto.RoleId == 1)
+            {
+                var userUseCases = user.UserUseCases;
+                Context.UserUseCases.RemoveRange(userUseCases);
+                var adminUseCases = new List<int> {1,2,2002,2003,2004,2005,2006,2007,2010,2011,2012,2014,2016,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,2026,2027}; // moze i da se prodje kroz sve usecase-ove i svi osim registracije da se dodaju adminu
+                var newUserUsecases = adminUseCases.Select(x => new UserUseCase
+                {
+                    CaseId = x,
+                    UserId = dto.UserId
+                }).ToList();
+                Context.UserUseCases.AddRange(newUserUsecases);
+            }
+            else
+            {
+                var userUseCases = user.UserUseCases;
+                Context.UserUseCases.RemoveRange(userUseCases);
+                var regularUseCases = new List<int> { 1, 2, 2002, 2005, 2006, 2007, 2010, 2011, 2012, 2014, 2017, 2019, 2020, 2021, 2022, 2023, 2024 };
+                var newUserUsecases = regularUseCases.Select(x => new UserUseCase
+                {
+                    CaseId = x,
+                    UserId = dto.UserId
+                }).ToList();
+                Context.UserUseCases.AddRange(newUserUsecases);
+            }
             Context.Users.Update(user);
             Context.SaveChanges();
         }

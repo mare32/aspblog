@@ -10,6 +10,7 @@ namespace Blog.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class TokenController : ControllerBase
     {
         private readonly JwtManager _manager;
@@ -48,7 +49,7 @@ namespace Blog.Api.Controllers
             {
                 return Unauthorized();
             }
-            catch (System.Exception ex)
+            catch (System.Exception)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }

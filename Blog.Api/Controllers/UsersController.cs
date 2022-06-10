@@ -57,6 +57,7 @@ namespace Blog.Api.Controllers
         /// Shows a user.
         /// </summary>
         /// <param name="id"></param>
+        /// <param name="query"></param>
         /// <returns>User</returns>
         /// <remarks>
         /// Sample request:

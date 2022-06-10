@@ -64,7 +64,7 @@ namespace Blog.Api.Extensions
                 var conString = x.GetService<AppSettings>().ConnString;
 
                 optionsBuilder.UseSqlServer(conString).UseLazyLoadingProxies();
-
+                optionsBuilder.EnableSensitiveDataLogging();
                 var options = optionsBuilder.Options;
 
                 return new BlogContext(options);
