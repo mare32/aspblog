@@ -106,6 +106,8 @@ namespace Blog.Api.Extensions
             services.AddTransient<IDeleteVoteCommand, EfDeleteVoteCommand>();
             services.AddTransient<IDeleteBlogPostCommand, EfDeleteBlogPostCommand>();
             services.AddTransient<IDeleteUserCommand, EfDeleteUserCommand>();
+            services.AddTransient<IAddUserUseCaseCommand, EfAddUserUseCaseCommand>();
+            services.AddTransient<IRemoveUserUseCaseCommand, EfRemoveUserUseCaseCommand>();
             #endregion
 
             #region Validators
@@ -119,6 +121,7 @@ namespace Blog.Api.Extensions
             services.AddTransient<UpdateUserProfileValidator>();
             services.AddTransient<PatchBlogPostValidator>();
             services.AddTransient<UpdateBlogPostCategoriesValidator>();
+            services.AddTransient<UpdateUserUseCaseValidator>();
             #endregion
         }
 
