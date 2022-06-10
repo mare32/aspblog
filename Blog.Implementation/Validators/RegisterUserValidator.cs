@@ -14,6 +14,7 @@ namespace Blog.Implementation.Validators
         private BlogContext _context;
         public RegisterUserValidator(BlogContext context)
         {
+            _context = context;
             var imePrezimeRegex = @"^[A-Z][a-z]{2,}(\s[A-Z][a-z]{2,})?$";
             RuleFor(x => x.FirstName)
                 .Cascade(CascadeMode.Stop)

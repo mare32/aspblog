@@ -12,7 +12,7 @@ namespace Blog.Implementation.Validators
 {
     public class PatchBlogPostValidator : AbstractValidator<BlogPost>
     {
-        public PatchBlogPostValidator(BlogContext context)
+        public PatchBlogPostValidator()
         {
             RuleFor(x => x.Title)
                                 .Cascade(CascadeMode.Stop)

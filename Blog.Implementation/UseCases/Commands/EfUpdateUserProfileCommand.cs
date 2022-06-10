@@ -54,7 +54,7 @@ namespace Blog.Implementation.UseCases.Commands
                 user.Password = dto.Password;
             }
             user.UpdatedAt = DateTime.Now;
-            _validator.ValidateAndThrow(user); // testirati
+            _validator.ValidateAndThrow(user);
             Context.Users.Update(user);
             Context.SaveChanges();
         }

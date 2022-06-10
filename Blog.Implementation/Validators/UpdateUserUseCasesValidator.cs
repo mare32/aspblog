@@ -11,8 +11,11 @@ namespace Blog.Implementation.Validators
 {
     public class UpdateUserUseCasesValidator : AbstractValidator<UpdateUserUseCasesDto>
     {
+        BlogContext _context;
         public UpdateUserUseCasesValidator(BlogContext context)
         {
+            _context = context;
+           
             RuleFor(x => x.UserId)
                 .Cascade(CascadeMode.Stop)
                 .NotEmpty().WithMessage("User is required.")

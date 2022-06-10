@@ -14,6 +14,7 @@ namespace Blog.Implementation.Validators
         private BlogContext _context;
         public CreateBlogPostValidator(BlogContext context)
         {
+            _context = context;
             RuleFor(x => x.Title)
                                 .Cascade(CascadeMode.Stop)
                                 .NotEmpty().WithMessage("Naslov ne sme biti prazan.")

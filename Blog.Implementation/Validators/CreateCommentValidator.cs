@@ -11,8 +11,10 @@ namespace Blog.Implementation.Validators
 {
     public class CreateCommentValidator : AbstractValidator<CommentDto>
     {
+        BlogContext _context;
         public CreateCommentValidator(BlogContext context)
         {
+            _context = context;
             RuleFor( x => x.CommentText).Cascade(CascadeMode.Stop)
                                         .NotEmpty().WithMessage("Polje komentara ne sme ostati prazno");
             RuleFor(x => x.ParentId).Must(x => context.Comments.Any(y => y.Id == x))
