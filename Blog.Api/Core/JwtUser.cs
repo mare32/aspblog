@@ -18,7 +18,7 @@ namespace Blog.Api.Core
 
         public int Id => 0;
 
-        public IEnumerable<int> UseCaseIds => new List<int> { 1002, 2006, 2007, 2017, 1 }; 
+        public IEnumerable<int> UseCaseIds => new List<int> { 1002, 2006, 2007, 2017, 1, 2029 }; 
         //  1002 je registracija
         //  2006 pretraga objava
         //  2007 jedna objava

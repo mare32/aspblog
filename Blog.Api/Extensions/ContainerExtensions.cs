@@ -84,6 +84,7 @@ namespace Blog.Api.Extensions
             services.AddTransient<IGetUseCaseLogsQuery, SpGetUseCaseLogsQuery>();
             services.AddTransient<ISearchUseCasesQuery, EfSearchUseCasesQuery>();
             services.AddTransient<IGetOneCategoryQuery, EfGetOneCategoryQuery>();
+            services.AddTransient<ISearchBlogPostImagesQuery, EfSearchBlogPostImagesQuery>();
             #endregion
 
             #region Commands
