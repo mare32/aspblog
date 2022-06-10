@@ -1,5 +1,7 @@
 ﻿using Blog.Application.UseCases.Commands;
 using Blog.Application.UseCases.DTO;
+using Blog.Application.UseCases.DTO.Base;
+using Blog.Application.UseCases.Queries;
 using Blog.Implementation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -46,6 +48,29 @@ namespace Blog.Api.Controllers
         {
             _handler.HandleCommand(command, dto);
             return NoContent();
+        }
+
+        /// <summary>
+        /// Search User use cases.
+        /// </summary>
+        /// <param name="search"></param>
+        /// <param name="query"></param>
+        /// <returns>UserUseCases</returns>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///  GET /api/userusecases
+        ///   QueryString
+        ///  "perPage": 5,
+        ///  "page": 1,
+        ///  "keyword": "p"
+        ///
+        /// </remarks>
+        /// <response code="500">Unexpected server error.</response>
+        [HttpGet]
+        public IActionResult Get([FromQuery]BasePagedSearch search, [FromServices]ISearchUserUseCasesQuery query)
+        {
+            return Ok(_handler.HandleQuery(query, search));
         }
     }
 }
