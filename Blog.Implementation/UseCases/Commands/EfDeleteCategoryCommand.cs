@@ -32,7 +32,7 @@ namespace Blog.Implementation.UseCases.Commands
             }
             if( category.BlogPostCategories.Any())
             {
-                throw new Exception("There are posts connected to this category, it cannot be deleted.");
+                throw new ValidationConflictException("Neke objave su povezane sa ovom kategorijom, nije je moguce obrisati.");
             }
             Context.Categories.Remove(category);
             Context.SaveChanges();

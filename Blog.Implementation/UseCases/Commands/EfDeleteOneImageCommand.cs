@@ -28,7 +28,7 @@ namespace Blog.Implementation.UseCases.Commands
             var image = Context.Images.FirstOrDefault(x => x.Id == imageId);
             if(Context.BlogPosts.Any( x => x.CoverImage == imageId))
             {
-                throw new Exception("Ova slika se koristi kao CoverImage za neku objavu, prvo to promenite");
+                throw new ValidationConflictException("Ova slika se koristi kao CoverImage za neku objavu, prvo to promenite");
             }
             if (!Context.Images.Any(x => x.Id == imageId))
             {

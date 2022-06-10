@@ -35,7 +35,7 @@ namespace Blog.Implementation.UseCases.Commands
             }
             if(user.Id == _user.Id)
             {
-                throw new Exception("Brisanje sopstvenog naloga nije implementirano.");
+                throw new Exception("Brisanje sopstvenog naloga nije moguce.");
             }
            
             if(user.BlogPosts.Any())

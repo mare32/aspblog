@@ -61,6 +61,12 @@ namespace Blog.Api.Core
                     response = new { message = conflictEx.Message };
                 }
 
+                if (ex is ValidationConflictException conflict)
+                {
+                    statusCode = StatusCodes.Status409Conflict;
+                    response = new { message = conflict.Message };
+                }
+
 
                 httpContext.Response.StatusCode = statusCode;
                 if (response != null)

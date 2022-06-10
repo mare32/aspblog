@@ -39,7 +39,7 @@ namespace Blog.Implementation.UseCases.Commands
             Vote vote = new Vote();
             if (dto.BlogPostId.HasValue && dto.CommentId.HasValue)
             {
-                throw new Exception("Ne moze jedan isti glas biti usmeren i na objavu i na komentar.");
+                throw new ValidationConflictException("Ne moze jedan isti glas biti usmeren i na objavu i na komentar.");
             }
             if (dto.BlogPostId.HasValue)
             {

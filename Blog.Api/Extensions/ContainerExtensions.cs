@@ -139,7 +139,6 @@ namespace Blog.Api.Extensions
                     Email = claims.FindFirst("Email").Value,
                     Id = Int32.Parse(claims.FindFirst("UserId").Value),
                     Identity = claims.FindFirst("Email").Value,
-                    // "[1, 2, 3, 4, 5]"
                     UseCaseIds = JsonConvert.DeserializeObject<List<int>>(claims.FindFirst("UseCases").Value)
                 };
 
