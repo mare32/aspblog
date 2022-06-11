@@ -44,7 +44,7 @@ namespace Blog.Implementation.UseCases.Commands
             Context.SaveChanges();
 
             var addedUser = Context.Users.Where(x => x.Username == request.Username).FirstOrDefault();
-            var usecases = new List<int>{ 1,2,2002,2005,2006,2007,2010,2011,2012,2014,2017,2019,2020,2021,2022,2023,2024 }; // hardkodovano
+            var usecases = new List<int>{ 1,2,2002,2005,2006,2007,2010,2011,2012,2014,2017,2019,2020,2021,2022,2023,2024,2028, 2029 }; // hardkodovano
             var userUsecases = usecases.Select(x => new UserUseCase
             {
                 CaseId = x,

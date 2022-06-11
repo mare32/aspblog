@@ -27,7 +27,7 @@ namespace Blog.Implementation.UseCases.Commands
 
         public void Execute(int commentId)
         {
-            var comment = Context.Comments.FirstOrDefault(c => c.Id == commentId && c.UserId == _user.Id);
+             var comment = Context.Comments.FirstOrDefault(c => c.Id == commentId && c.UserId == _user.Id);
             if(comment == null)
             {
                 throw new EntityNotFoundException(nameof(Comment), commentId);
