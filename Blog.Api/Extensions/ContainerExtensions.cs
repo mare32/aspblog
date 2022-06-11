@@ -86,6 +86,7 @@ namespace Blog.Api.Extensions
             services.AddTransient<IGetOneCategoryQuery, EfGetOneCategoryQuery>();
             services.AddTransient<ISearchBlogPostImagesQuery, EfSearchBlogPostImagesQuery>();
             services.AddTransient<ISearchUserUseCasesQuery, EfSearchUserUseCasesQuery>();
+            services.AddTransient<ISearchUsersVotesQuery, EfSearchUsersVotesQuery>();
             #endregion
 
             #region Commands
