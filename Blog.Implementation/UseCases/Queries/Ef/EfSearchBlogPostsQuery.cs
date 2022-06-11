@@ -2,6 +2,7 @@
 using Blog.Application.UseCases.DTO.Base;
 using Blog.Application.UseCases.Queries;
 using Blog.DataAccess;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,11 +25,11 @@ namespace Blog.Implementation.UseCases.Queries.Ef
 
         public PagedResponse<BlogPostDto> Execute(BasePagedSearch search)
         {
-            var query = Context.BlogPosts.AsQueryable();
+            var query = Context.BlogPosts.Include( x => x.Author).AsQueryable();
 
             if (!string.IsNullOrEmpty(search.Keyword))
             {
-                query = query.Where(x => x.Title.Contains(search.Keyword));
+                query = query.Where(x => x.Title.Contains(search.Keyword) || x.Author.Username.Contains(search.Keyword));
             }
 
             if (search.PerPage == null || search.PerPage < 1)

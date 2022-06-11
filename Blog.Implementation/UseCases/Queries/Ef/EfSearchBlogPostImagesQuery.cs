@@ -47,6 +47,7 @@ namespace Blog.Implementation.UseCases.Queries.Ef
             response.TotalCount = query.Count();
             response.Data = query.Skip(toSkip).Take(search.PerPage.Value).Select(x => new BlogPostImageDto
             {
+                Id = x.ImageId,
                 BlogPostId = x.BlogPost.Id,
                 BlogPostTitle = x.BlogPost.Title,
                 AuthorUsername = x.BlogPost.Author.Username,

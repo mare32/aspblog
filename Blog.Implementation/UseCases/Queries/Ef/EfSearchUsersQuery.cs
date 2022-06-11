@@ -23,7 +23,7 @@ namespace Blog.Implementation.UseCases.Queries.Ef
 
         public string Description => "Search users using EF";
 
-        public PagedResponse<UserDto> Execute(BasePagedSearch request)
+        public PagedResponse<UserWithRoleDto> Execute(BasePagedSearch request)
         {
             var query = Context.Users.AsQueryable();
             if (!string.IsNullOrEmpty(request.Keyword))
@@ -46,15 +46,16 @@ namespace Blog.Implementation.UseCases.Queries.Ef
 
             var toSkip = (request.Page.Value - 1) * request.PerPage.Value;
 
-            var response = new PagedResponse<UserDto>();
+            var response = new PagedResponse<UserWithRoleDto>();
             response.TotalCount = query.Count();
-            response.Data = query.Skip(toSkip).Take(request.PerPage.Value).Select(x => new UserDto
+            response.Data = query.Skip(toSkip).Take(request.PerPage.Value).Select(x => new UserWithRoleDto
             {
                 Id = x.Id,
                 FirstName = x.FirstName,
                 LastName = x.LastName,
                 Username = x.Username,
-                Email = x.Email
+                Email = x.Email,
+                Role = x.Role.Name
             }).ToList();
             response.CurrentPage = request.Page.Value;
             response.ItemsPerPage = request.PerPage.Value;
