@@ -51,7 +51,7 @@ namespace Blog.Implementation.UseCases.Commands
             if(dto.Password != null)
             {
                 var hash = BCrypt.Net.BCrypt.HashPassword(dto.Password);
-                user.Password = dto.Password;
+                user.Password = hash;
             }
             user.UpdatedAt = DateTime.Now;
             _validator.ValidateAndThrow(user);
