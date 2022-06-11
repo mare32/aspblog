@@ -1,0 +1,1011 @@
+﻿USE [master]
+GO
+/****** Object:  Database [blog]    Script Date: 11/06/2022 12:14:31 ******/
+CREATE DATABASE [blog]
+ CONTAINMENT = NONE
+ ON  PRIMARY 
+( NAME = N'blog', FILENAME = N'C:\Program Files\Microsoft SQL Server\MSSQL15.SQLEXPRESS\MSSQL\DATA\blog.mdf' , SIZE = 8192KB , MAXSIZE = UNLIMITED, FILEGROWTH = 65536KB )
+ LOG ON 
+( NAME = N'blog_log', FILENAME = N'C:\Program Files\Microsoft SQL Server\MSSQL15.SQLEXPRESS\MSSQL\DATA\blog_log.ldf' , SIZE = 8192KB , MAXSIZE = 2048GB , FILEGROWTH = 65536KB )
+ WITH CATALOG_COLLATION = DATABASE_DEFAULT
+GO
+ALTER DATABASE [blog] SET COMPATIBILITY_LEVEL = 150
+GO
+IF (1 = FULLTEXTSERVICEPROPERTY('IsFullTextInstalled'))
+begin
+EXEC [blog].[dbo].[sp_fulltext_database] @action = 'enable'
+end
+GO
+ALTER DATABASE [blog] SET ANSI_NULL_DEFAULT OFF 
+GO
+ALTER DATABASE [blog] SET ANSI_NULLS OFF 
+GO
+ALTER DATABASE [blog] SET ANSI_PADDING OFF 
+GO
+ALTER DATABASE [blog] SET ANSI_WARNINGS OFF 
+GO
+ALTER DATABASE [blog] SET ARITHABORT OFF 
+GO
+ALTER DATABASE [blog] SET AUTO_CLOSE OFF 
+GO
+ALTER DATABASE [blog] SET AUTO_SHRINK OFF 
+GO
+ALTER DATABASE [blog] SET AUTO_UPDATE_STATISTICS ON 
+GO
+ALTER DATABASE [blog] SET CURSOR_CLOSE_ON_COMMIT OFF 
+GO
+ALTER DATABASE [blog] SET CURSOR_DEFAULT  GLOBAL 
+GO
+ALTER DATABASE [blog] SET CONCAT_NULL_YIELDS_NULL OFF 
+GO
+ALTER DATABASE [blog] SET NUMERIC_ROUNDABORT OFF 
+GO
+ALTER DATABASE [blog] SET QUOTED_IDENTIFIER OFF 
+GO
+ALTER DATABASE [blog] SET RECURSIVE_TRIGGERS OFF 
+GO
+ALTER DATABASE [blog] SET  DISABLE_BROKER 
+GO
+ALTER DATABASE [blog] SET AUTO_UPDATE_STATISTICS_ASYNC OFF 
+GO
+ALTER DATABASE [blog] SET DATE_CORRELATION_OPTIMIZATION OFF 
+GO
+ALTER DATABASE [blog] SET TRUSTWORTHY OFF 
+GO
+ALTER DATABASE [blog] SET ALLOW_SNAPSHOT_ISOLATION OFF 
+GO
+ALTER DATABASE [blog] SET PARAMETERIZATION SIMPLE 
+GO
+ALTER DATABASE [blog] SET READ_COMMITTED_SNAPSHOT OFF 
+GO
+ALTER DATABASE [blog] SET HONOR_BROKER_PRIORITY OFF 
+GO
+ALTER DATABASE [blog] SET RECOVERY SIMPLE 
+GO
+ALTER DATABASE [blog] SET  MULTI_USER 
+GO
+ALTER DATABASE [blog] SET PAGE_VERIFY CHECKSUM  
+GO
+ALTER DATABASE [blog] SET DB_CHAINING OFF 
+GO
+ALTER DATABASE [blog] SET FILESTREAM( NON_TRANSACTED_ACCESS = OFF ) 
+GO
+ALTER DATABASE [blog] SET TARGET_RECOVERY_TIME = 60 SECONDS 
+GO
+ALTER DATABASE [blog] SET DELAYED_DURABILITY = DISABLED 
+GO
+ALTER DATABASE [blog] SET ACCELERATED_DATABASE_RECOVERY = OFF  
+GO
+ALTER DATABASE [blog] SET QUERY_STORE = OFF
+GO
+USE [blog]
+GO
+/****** Object:  Table [dbo].[__EFMigrationsHistory]    Script Date: 11/06/2022 12:14:32 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[__EFMigrationsHistory](
+	[MigrationId] [nvarchar](150) NOT NULL,
+	[ProductVersion] [nvarchar](32) NOT NULL,
+ CONSTRAINT [PK___EFMigrationsHistory] PRIMARY KEY CLUSTERED 
+(
+	[MigrationId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[AuditLogs]    Script Date: 11/06/2022 12:14:32 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[AuditLogs](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[UseCaseName] [nvarchar](450) NULL,
+	[Username] [nvarchar](max) NULL,
+	[UserId] [int] NOT NULL,
+	[ExecutedAt] [datetime2](7) NOT NULL,
+	[Data] [nvarchar](max) NULL,
+	[IsAuthorized] [bit] NOT NULL,
+ CONSTRAINT [PK_AuditLogs] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[BlogPostCategories]    Script Date: 11/06/2022 12:14:32 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[BlogPostCategories](
+	[PostId] [int] NOT NULL,
+	[CategoryId] [int] NOT NULL,
+ CONSTRAINT [PK_BlogPostCategories] PRIMARY KEY CLUSTERED 
+(
+	[PostId] ASC,
+	[CategoryId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[BlogPostImages]    Script Date: 11/06/2022 12:14:32 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[BlogPostImages](
+	[PostId] [int] NOT NULL,
+	[ImageId] [int] NOT NULL,
+ CONSTRAINT [PK_BlogPostImages] PRIMARY KEY CLUSTERED 
+(
+	[PostId] ASC,
+	[ImageId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[BlogPosts]    Script Date: 11/06/2022 12:14:32 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[BlogPosts](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[Title] [nvarchar](50) NOT NULL,
+	[BlogPostContent] [nvarchar](max) NOT NULL,
+	[AuthorId] [int] NOT NULL,
+	[CoverImage] [int] NOT NULL,
+	[CreatedAt] [datetime2](7) NOT NULL,
+	[UpdatedAt] [datetime2](7) NULL,
+ CONSTRAINT [PK_BlogPosts] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Categories]    Script Date: 11/06/2022 12:14:32 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Categories](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[Name] [nvarchar](30) NOT NULL,
+ CONSTRAINT [PK_Categories] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Comments]    Script Date: 11/06/2022 12:14:32 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Comments](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[PostId] [int] NOT NULL,
+	[UserId] [int] NOT NULL,
+	[CommentText] [nvarchar](255) NOT NULL,
+	[CommentedAt] [datetime2](7) NOT NULL,
+	[DeletedAt] [datetime2](7) NULL,
+	[ParentId] [int] NULL,
+	[ParentCommentId] [int] NULL,
+ CONSTRAINT [PK_Comments] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Images]    Script Date: 11/06/2022 12:14:32 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Images](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[Src] [nvarchar](max) NOT NULL,
+	[Alt] [nvarchar](max) NOT NULL,
+ CONSTRAINT [PK_Images] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Roles]    Script Date: 11/06/2022 12:14:32 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Roles](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[Name] [nvarchar](30) NOT NULL,
+ CONSTRAINT [PK_Roles] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[UseCases]    Script Date: 11/06/2022 12:14:32 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[UseCases](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[Name] [nvarchar](50) NOT NULL,
+	[Description] [nvarchar](50) NULL,
+ CONSTRAINT [PK_UseCases] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Users]    Script Date: 11/06/2022 12:14:32 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Users](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[Username] [nvarchar](40) NOT NULL,
+	[FirstName] [nvarchar](max) NULL,
+	[LastName] [nvarchar](max) NULL,
+	[Password] [nvarchar](100) NOT NULL,
+	[Email] [nvarchar](40) NOT NULL,
+	[Active] [int] NOT NULL,
+	[RoleId] [int] NOT NULL,
+	[CreatedAt] [datetime2](7) NOT NULL,
+	[UpdatedAt] [datetime2](7) NULL,
+	[DeletedAt] [datetime2](7) NULL,
+	[DeletedBy] [int] NULL,
+ CONSTRAINT [PK_Users] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[UserUseCases]    Script Date: 11/06/2022 12:14:32 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[UserUseCases](
+	[UserId] [int] NOT NULL,
+	[CaseId] [int] NOT NULL,
+ CONSTRAINT [PK_UserUseCases] PRIMARY KEY CLUSTERED 
+(
+	[UserId] ASC,
+	[CaseId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Votes]    Script Date: 11/06/2022 12:14:32 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Votes](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[UserId] [int] NOT NULL,
+	[PostId] [int] NULL,
+	[CommentId] [int] NULL,
+	[TypeId] [int] NOT NULL,
+	[VotedAt] [datetime2](7) NOT NULL,
+ CONSTRAINT [PK_Votes] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[VoteTypes]    Script Date: 11/06/2022 12:14:32 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[VoteTypes](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[Type] [nvarchar](20) NOT NULL,
+ CONSTRAINT [PK_VoteTypes] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+INSERT [dbo].[__EFMigrationsHistory] ([MigrationId], [ProductVersion]) VALUES (N'20220603093113_ini', N'5.0.17')
+GO
+INSERT [dbo].[__EFMigrationsHistory] ([MigrationId], [ProductVersion]) VALUES (N'20220603093926_initial', N'5.0.17')
+GO
+INSERT [dbo].[__EFMigrationsHistory] ([MigrationId], [ProductVersion]) VALUES (N'20220603113705_getdateAuditLog', N'5.0.17')
+GO
+SET IDENTITY_INSERT [dbo].[AuditLogs] ON 
+GO
+INSERT [dbo].[AuditLogs] ([Id], [UseCaseName], [Username], [UserId], [ExecutedAt], [Data], [IsAuthorized]) VALUES (1233, N'Change Role', N'admin@gmail.com', 2, CAST(N'2022-06-11T10:11:58.8066667' AS DateTime2), N'{"RoleId":1,"UserId":1}', 1)
+GO
+INSERT [dbo].[AuditLogs] ([Id], [UseCaseName], [Username], [UserId], [ExecutedAt], [Data], [IsAuthorized]) VALUES (1234, N'Search users', N'admin@gmail.com', 2, CAST(N'2022-06-11T10:12:05.6633333' AS DateTime2), N'{"Keyword":null,"PerPage":5,"Page":1}', 1)
+GO
+SET IDENTITY_INSERT [dbo].[AuditLogs] OFF
+GO
+INSERT [dbo].[BlogPostCategories] ([PostId], [CategoryId]) VALUES (8, 1)
+GO
+INSERT [dbo].[BlogPostCategories] ([PostId], [CategoryId]) VALUES (7, 2)
+GO
+INSERT [dbo].[BlogPostCategories] ([PostId], [CategoryId]) VALUES (8, 2)
+GO
+INSERT [dbo].[BlogPostCategories] ([PostId], [CategoryId]) VALUES (3, 3)
+GO
+INSERT [dbo].[BlogPostCategories] ([PostId], [CategoryId]) VALUES (7, 3)
+GO
+INSERT [dbo].[BlogPostCategories] ([PostId], [CategoryId]) VALUES (3, 1002)
+GO
+INSERT [dbo].[BlogPostImages] ([PostId], [ImageId]) VALUES (3, 1003)
+GO
+INSERT [dbo].[BlogPostImages] ([PostId], [ImageId]) VALUES (7, 1012)
+GO
+INSERT [dbo].[BlogPostImages] ([PostId], [ImageId]) VALUES (8, 1013)
+GO
+INSERT [dbo].[BlogPostImages] ([PostId], [ImageId]) VALUES (3, 1016)
+GO
+SET IDENTITY_INSERT [dbo].[BlogPosts] ON 
+GO
+INSERT [dbo].[BlogPosts] ([Id], [Title], [BlogPostContent], [AuthorId], [CoverImage], [CreatedAt], [UpdatedAt]) VALUES (3, N'Updated title', N'Updated Blog Post Content Aganee!!!', 1, 1003, CAST(N'2022-06-05T18:59:33.7433333' AS DateTime2), CAST(N'2022-06-06T12:15:50.1918666' AS DateTime2))
+GO
+INSERT [dbo].[BlogPosts] ([Id], [Title], [BlogPostContent], [AuthorId], [CoverImage], [CreatedAt], [UpdatedAt]) VALUES (7, N'Perin Blog post 2', N'Perin Blog post content 2', 1, 1011, CAST(N'2022-06-10T08:40:42.6200000' AS DateTime2), CAST(N'2022-06-10T08:42:02.7504767' AS DateTime2))
+GO
+INSERT [dbo].[BlogPosts] ([Id], [Title], [BlogPostContent], [AuthorId], [CoverImage], [CreatedAt], [UpdatedAt]) VALUES (8, N'Updated titlea', N'Neki kontent', 1, 1013, CAST(N'2022-06-10T19:45:57.0600000' AS DateTime2), NULL)
+GO
+SET IDENTITY_INSERT [dbo].[BlogPosts] OFF
+GO
+SET IDENTITY_INSERT [dbo].[Categories] ON 
+GO
+INSERT [dbo].[Categories] ([Id], [Name]) VALUES (2, N'Food')
+GO
+INSERT [dbo].[Categories] ([Id], [Name]) VALUES (3, N'Health')
+GO
+INSERT [dbo].[Categories] ([Id], [Name]) VALUES (1002, N'Racing')
+GO
+INSERT [dbo].[Categories] ([Id], [Name]) VALUES (2002, N'Test')
+GO
+INSERT [dbo].[Categories] ([Id], [Name]) VALUES (1, N'Travel')
+GO
+SET IDENTITY_INSERT [dbo].[Categories] OFF
+GO
+SET IDENTITY_INSERT [dbo].[Comments] ON 
+GO
+INSERT [dbo].[Comments] ([Id], [PostId], [UserId], [CommentText], [CommentedAt], [DeletedAt], [ParentId], [ParentCommentId]) VALUES (1013, 3, 1, N'Choco 2 comment', CAST(N'2022-06-07T10:11:24.7933333' AS DateTime2), NULL, NULL, NULL)
+GO
+SET IDENTITY_INSERT [dbo].[Comments] OFF
+GO
+SET IDENTITY_INSERT [dbo].[Images] ON 
+GO
+INSERT [dbo].[Images] ([Id], [Src], [Alt]) VALUES (1003, N'wwwroot\images\14a668ef-9946-4e2b-806e-d88710d543dc.jpg', N'Jotaro')
+GO
+INSERT [dbo].[Images] ([Id], [Src], [Alt]) VALUES (1011, N'wwwroot\images\14aac29f-9cd5-45af-9835-a69234a3a5b8.png', N'Alternativa slike')
+GO
+INSERT [dbo].[Images] ([Id], [Src], [Alt]) VALUES (1012, N'wwwroot\images\c5ac52a4-2619-48af-976c-42e09ead31cd.jpg', N'833996')
+GO
+INSERT [dbo].[Images] ([Id], [Src], [Alt]) VALUES (1013, N'wwwroot\images\6effd3e3-849b-4d5a-b97d-b1d1588478e7.png', N'pomp')
+GO
+INSERT [dbo].[Images] ([Id], [Src], [Alt]) VALUES (1016, N'wwwroot\images\b4ad2fe0-2be4-4ff8-a682-f2d620c3fdb2.jpg', N'dragonballz_kame_house-wallpapers-1920x1200')
+GO
+SET IDENTITY_INSERT [dbo].[Images] OFF
+GO
+SET IDENTITY_INSERT [dbo].[Roles] ON 
+GO
+INSERT [dbo].[Roles] ([Id], [Name]) VALUES (1, N'Admin')
+GO
+INSERT [dbo].[Roles] ([Id], [Name]) VALUES (2, N'Normal')
+GO
+SET IDENTITY_INSERT [dbo].[Roles] OFF
+GO
+SET IDENTITY_INSERT [dbo].[UseCases] ON 
+GO
+INSERT [dbo].[UseCases] ([Id], [Name], [Description]) VALUES (1, N'Search Category', N'Search Categories using Entity Framework')
+GO
+INSERT [dbo].[UseCases] ([Id], [Name], [Description]) VALUES (2, N'Create Category', N'Create a new category using EntityFramework')
+GO
+INSERT [dbo].[UseCases] ([Id], [Name], [Description]) VALUES (1002, N'Register', N'User register using EF')
+GO
+INSERT [dbo].[UseCases] ([Id], [Name], [Description]) VALUES (2002, N'View User', N'See one users details using EF')
+GO
+INSERT [dbo].[UseCases] ([Id], [Name], [Description]) VALUES (2003, N'Search Users', N'Search amongst all users with a keyword using EF')
+GO
+INSERT [dbo].[UseCases] ([Id], [Name], [Description]) VALUES (2004, N'Delete Category', N'Delete category by Id')
+GO
+INSERT [dbo].[UseCases] ([Id], [Name], [Description]) VALUES (2005, N'Create BlogPost', N'Creating a new blog post using EF')
+GO
+INSERT [dbo].[UseCases] ([Id], [Name], [Description]) VALUES (2006, N'Search BlogPosts', N'Searching blog posts with a keyword using EF')
+GO
+INSERT [dbo].[UseCases] ([Id], [Name], [Description]) VALUES (2007, N'View BlogPost', N'See Blogpost by Id using EF')
+GO
+INSERT [dbo].[UseCases] ([Id], [Name], [Description]) VALUES (2010, N'Add images', N'Add images to blog posts using Ef')
+GO
+INSERT [dbo].[UseCases] ([Id], [Name], [Description]) VALUES (2011, N'Patch BlogPost', N'Patching some of the Blog Post Properties using EF')
+GO
+INSERT [dbo].[UseCases] ([Id], [Name], [Description]) VALUES (2012, N'Create Comment', N'Create a comment using EF')
+GO
+INSERT [dbo].[UseCases] ([Id], [Name], [Description]) VALUES (2014, N'Create Vote', N'Vote up or down on a comment or a blog post')
+GO
+INSERT [dbo].[UseCases] ([Id], [Name], [Description]) VALUES (2015, N'Search Roles', N'Search roles with a keyword using EF')
+GO
+INSERT [dbo].[UseCases] ([Id], [Name], [Description]) VALUES (2016, N'Change Role', N'Change user role using EF')
+GO
+INSERT [dbo].[UseCases] ([Id], [Name], [Description]) VALUES (2017, N'Show Comments', N'Show comments by post id using EF')
+GO
+INSERT [dbo].[UseCases] ([Id], [Name], [Description]) VALUES (2018, N'Update User UseCases', N'Update user usecases using EF')
+GO
+INSERT [dbo].[UseCases] ([Id], [Name], [Description]) VALUES (2019, N'Update BlogPost Categories', N'Update Blog Post Categories using EF')
+GO
+INSERT [dbo].[UseCases] ([Id], [Name], [Description]) VALUES (2020, N'Update User Profile', N'Update User Profile using EF')
+GO
+INSERT [dbo].[UseCases] ([Id], [Name], [Description]) VALUES (2021, N'Delete One Image', N'Delete a single image using EF')
+GO
+INSERT [dbo].[UseCases] ([Id], [Name], [Description]) VALUES (2022, N'Delete Comment', N'Delete comment with all of its subcoments using EF')
+GO
+INSERT [dbo].[UseCases] ([Id], [Name], [Description]) VALUES (2023, N'Delete Vote', N'Delete vote by id using EF')
+GO
+INSERT [dbo].[UseCases] ([Id], [Name], [Description]) VALUES (2024, N'Delete BlogPost', N'Delete BlogPost by id using EF')
+GO
+INSERT [dbo].[UseCases] ([Id], [Name], [Description]) VALUES (2025, N'Delete User', N'Delete User by id using EF')
+GO
+INSERT [dbo].[UseCases] ([Id], [Name], [Description]) VALUES (2026, N'Search Logs', N'Search through UseCase logs using SP')
+GO
+INSERT [dbo].[UseCases] ([Id], [Name], [Description]) VALUES (2027, N'Search UseCases', N'Search UseCases, paged, using EF')
+GO
+INSERT [dbo].[UseCases] ([Id], [Name], [Description]) VALUES (2028, N'Show Category', N'Show category by id using EF')
+GO
+INSERT [dbo].[UseCases] ([Id], [Name], [Description]) VALUES (2029, N'Search BlogPostIImages', N'Search blog post images by keyword using Ef')
+GO
+INSERT [dbo].[UseCases] ([Id], [Name], [Description]) VALUES (2030, N'Search UserUseCases', N'Search UserUseCases by keyword using EF')
+GO
+INSERT [dbo].[UseCases] ([Id], [Name], [Description]) VALUES (2031, N'Add UserUseCase', N'Assign UserUseCase to a user using EF')
+GO
+INSERT [dbo].[UseCases] ([Id], [Name], [Description]) VALUES (2032, N'Remove UserUseCase', N'Revoke UserUseCase from a user using EF')
+GO
+INSERT [dbo].[UseCases] ([Id], [Name], [Description]) VALUES (2033, N'Search UsersVotes', N'Search votes of a logged user using EF')
+GO
+SET IDENTITY_INSERT [dbo].[UseCases] OFF
+GO
+SET IDENTITY_INSERT [dbo].[Users] ON 
+GO
+INSERT [dbo].[Users] ([Id], [Username], [FirstName], [LastName], [Password], [Email], [Active], [RoleId], [CreatedAt], [UpdatedAt], [DeletedAt], [DeletedBy]) VALUES (1, N'pera', N'Pera', N'Peric', N'$2a$11$Fh30e2Ivjz2CRzvlrfYfmewDxr7em8oNgxs55OOH.bzOcQuly09dC', N'pera@gmail.com', 1, 1, CAST(N'2022-06-03T13:31:04.0566667' AS DateTime2), CAST(N'2022-06-11T12:11:58.8230976' AS DateTime2), NULL, NULL)
+GO
+INSERT [dbo].[Users] ([Id], [Username], [FirstName], [LastName], [Password], [Email], [Active], [RoleId], [CreatedAt], [UpdatedAt], [DeletedAt], [DeletedBy]) VALUES (2, N'admin', N'Tika', N'Tikic', N'$2a$11$Fh30e2Ivjz2CRzvlrfYfmewDxr7em8oNgxs55OOH.bzOcQuly09dC', N'admin@gmail.com', 1, 1, CAST(N'2022-06-03T13:31:04.2000000' AS DateTime2), CAST(N'2022-06-11T12:08:26.5498363' AS DateTime2), NULL, NULL)
+GO
+INSERT [dbo].[Users] ([Id], [Username], [FirstName], [LastName], [Password], [Email], [Active], [RoleId], [CreatedAt], [UpdatedAt], [DeletedAt], [DeletedBy]) VALUES (2002, N'mare', N'Marko', N'Anastasijevic', N'$2a$11$bRdL1Xi5WKxo3WrmlAnS5.p0tRjZfrithQj4hdh7HngADqZz4cEKq', N'marechl32@gmail.com', 1, 2, CAST(N'2022-06-07T12:39:47.1900000' AS DateTime2), CAST(N'2022-06-11T12:09:03.5549370' AS DateTime2), NULL, NULL)
+GO
+INSERT [dbo].[Users] ([Id], [Username], [FirstName], [LastName], [Password], [Email], [Active], [RoleId], [CreatedAt], [UpdatedAt], [DeletedAt], [DeletedBy]) VALUES (2005, N'zika', N'Zivomir', N'Zikic', N'$2a$11$2usfsXmF7HBIxmOKCmVkP.rAruJHpo8Quj.xD24kXAR4wWS0XvJsa', N'zika@gmail.com', 1, 2, CAST(N'2022-06-10T10:00:43.9800000' AS DateTime2), CAST(N'2022-06-11T12:09:24.4937083' AS DateTime2), NULL, NULL)
+GO
+INSERT [dbo].[Users] ([Id], [Username], [FirstName], [LastName], [Password], [Email], [Active], [RoleId], [CreatedAt], [UpdatedAt], [DeletedAt], [DeletedBy]) VALUES (2006, N'johnny22', N'Johnny', N'Depp', N'$2a$11$qnsM5F7XUsMu7PKDMq1YIuG0Vfnm5boXAfZhgH6qAg9Y3xH7rOPDS', N'johnny22@gmail.com', 1, 2, CAST(N'2022-06-11T09:14:15.7533333' AS DateTime2), CAST(N'2022-06-11T12:09:39.6683139' AS DateTime2), NULL, NULL)
+GO
+SET IDENTITY_INSERT [dbo].[Users] OFF
+GO
+INSERT [dbo].[UserUseCases] ([UserId], [CaseId]) VALUES (1, 1)
+GO
+INSERT [dbo].[UserUseCases] ([UserId], [CaseId]) VALUES (2, 1)
+GO
+INSERT [dbo].[UserUseCases] ([UserId], [CaseId]) VALUES (2002, 1)
+GO
+INSERT [dbo].[UserUseCases] ([UserId], [CaseId]) VALUES (2005, 1)
+GO
+INSERT [dbo].[UserUseCases] ([UserId], [CaseId]) VALUES (2006, 1)
+GO
+INSERT [dbo].[UserUseCases] ([UserId], [CaseId]) VALUES (1, 2)
+GO
+INSERT [dbo].[UserUseCases] ([UserId], [CaseId]) VALUES (2, 2)
+GO
+INSERT [dbo].[UserUseCases] ([UserId], [CaseId]) VALUES (2002, 2)
+GO
+INSERT [dbo].[UserUseCases] ([UserId], [CaseId]) VALUES (2005, 2)
+GO
+INSERT [dbo].[UserUseCases] ([UserId], [CaseId]) VALUES (2006, 2)
+GO
+INSERT [dbo].[UserUseCases] ([UserId], [CaseId]) VALUES (1, 2002)
+GO
+INSERT [dbo].[UserUseCases] ([UserId], [CaseId]) VALUES (2, 2002)
+GO
+INSERT [dbo].[UserUseCases] ([UserId], [CaseId]) VALUES (2002, 2002)
+GO
+INSERT [dbo].[UserUseCases] ([UserId], [CaseId]) VALUES (2005, 2002)
+GO
+INSERT [dbo].[UserUseCases] ([UserId], [CaseId]) VALUES (2006, 2002)
+GO
+INSERT [dbo].[UserUseCases] ([UserId], [CaseId]) VALUES (1, 2003)
+GO
+INSERT [dbo].[UserUseCases] ([UserId], [CaseId]) VALUES (2, 2003)
+GO
+INSERT [dbo].[UserUseCases] ([UserId], [CaseId]) VALUES (1, 2004)
+GO
+INSERT [dbo].[UserUseCases] ([UserId], [CaseId]) VALUES (2, 2004)
+GO
+INSERT [dbo].[UserUseCases] ([UserId], [CaseId]) VALUES (1, 2005)
+GO
+INSERT [dbo].[UserUseCases] ([UserId], [CaseId]) VALUES (2, 2005)
+GO
+INSERT [dbo].[UserUseCases] ([UserId], [CaseId]) VALUES (2002, 2005)
+GO
+INSERT [dbo].[UserUseCases] ([UserId], [CaseId]) VALUES (2005, 2005)
+GO
+INSERT [dbo].[UserUseCases] ([UserId], [CaseId]) VALUES (2006, 2005)
+GO
+INSERT [dbo].[UserUseCases] ([UserId], [CaseId]) VALUES (1, 2006)
+GO
+INSERT [dbo].[UserUseCases] ([UserId], [CaseId]) VALUES (2, 2006)
+GO
+INSERT [dbo].[UserUseCases] ([UserId], [CaseId]) VALUES (2002, 2006)
+GO
+INSERT [dbo].[UserUseCases] ([UserId], [CaseId]) VALUES (2005, 2006)
+GO
+INSERT [dbo].[UserUseCases] ([UserId], [CaseId]) VALUES (2006, 2006)
+GO
+INSERT [dbo].[UserUseCases] ([UserId], [CaseId]) VALUES (1, 2007)
+GO
+INSERT [dbo].[UserUseCases] ([UserId], [CaseId]) VALUES (2, 2007)
+GO
+INSERT [dbo].[UserUseCases] ([UserId], [CaseId]) VALUES (2002, 2007)
+GO
+INSERT [dbo].[UserUseCases] ([UserId], [CaseId]) VALUES (2005, 2007)
+GO
+INSERT [dbo].[UserUseCases] ([UserId], [CaseId]) VALUES (2006, 2007)
+GO
+INSERT [dbo].[UserUseCases] ([UserId], [CaseId]) VALUES (1, 2010)
+GO
+INSERT [dbo].[UserUseCases] ([UserId], [CaseId]) VALUES (2, 2010)
+GO
+INSERT [dbo].[UserUseCases] ([UserId], [CaseId]) VALUES (2002, 2010)
+GO
+INSERT [dbo].[UserUseCases] ([UserId], [CaseId]) VALUES (2005, 2010)
+GO
+INSERT [dbo].[UserUseCases] ([UserId], [CaseId]) VALUES (2006, 2010)
+GO
+INSERT [dbo].[UserUseCases] ([UserId], [CaseId]) VALUES (1, 2011)
+GO
+INSERT [dbo].[UserUseCases] ([UserId], [CaseId]) VALUES (2, 2011)
+GO
+INSERT [dbo].[UserUseCases] ([UserId], [CaseId]) VALUES (2002, 2011)
+GO
+INSERT [dbo].[UserUseCases] ([UserId], [CaseId]) VALUES (2005, 2011)
+GO
+INSERT [dbo].[UserUseCases] ([UserId], [CaseId]) VALUES (2006, 2011)
+GO
+INSERT [dbo].[UserUseCases] ([UserId], [CaseId]) VALUES (1, 2012)
+GO
+INSERT [dbo].[UserUseCases] ([UserId], [CaseId]) VALUES (2, 2012)
+GO
+INSERT [dbo].[UserUseCases] ([UserId], [CaseId]) VALUES (2002, 2012)
+GO
+INSERT [dbo].[UserUseCases] ([UserId], [CaseId]) VALUES (2005, 2012)
+GO
+INSERT [dbo].[UserUseCases] ([UserId], [CaseId]) VALUES (2006, 2012)
+GO
+INSERT [dbo].[UserUseCases] ([UserId], [CaseId]) VALUES (1, 2014)
+GO
+INSERT [dbo].[UserUseCases] ([UserId], [CaseId]) VALUES (2, 2014)
+GO
+INSERT [dbo].[UserUseCases] ([UserId], [CaseId]) VALUES (2002, 2014)
+GO
+INSERT [dbo].[UserUseCases] ([UserId], [CaseId]) VALUES (2005, 2014)
+GO
+INSERT [dbo].[UserUseCases] ([UserId], [CaseId]) VALUES (2006, 2014)
+GO
+INSERT [dbo].[UserUseCases] ([UserId], [CaseId]) VALUES (1, 2016)
+GO
+INSERT [dbo].[UserUseCases] ([UserId], [CaseId]) VALUES (2, 2016)
+GO
+INSERT [dbo].[UserUseCases] ([UserId], [CaseId]) VALUES (1, 2017)
+GO
+INSERT [dbo].[UserUseCases] ([UserId], [CaseId]) VALUES (2, 2017)
+GO
+INSERT [dbo].[UserUseCases] ([UserId], [CaseId]) VALUES (2002, 2017)
+GO
+INSERT [dbo].[UserUseCases] ([UserId], [CaseId]) VALUES (2005, 2017)
+GO
+INSERT [dbo].[UserUseCases] ([UserId], [CaseId]) VALUES (2006, 2017)
+GO
+INSERT [dbo].[UserUseCases] ([UserId], [CaseId]) VALUES (1, 2018)
+GO
+INSERT [dbo].[UserUseCases] ([UserId], [CaseId]) VALUES (2, 2018)
+GO
+INSERT [dbo].[UserUseCases] ([UserId], [CaseId]) VALUES (1, 2019)
+GO
+INSERT [dbo].[UserUseCases] ([UserId], [CaseId]) VALUES (2, 2019)
+GO
+INSERT [dbo].[UserUseCases] ([UserId], [CaseId]) VALUES (2002, 2019)
+GO
+INSERT [dbo].[UserUseCases] ([UserId], [CaseId]) VALUES (2005, 2019)
+GO
+INSERT [dbo].[UserUseCases] ([UserId], [CaseId]) VALUES (2006, 2019)
+GO
+INSERT [dbo].[UserUseCases] ([UserId], [CaseId]) VALUES (1, 2020)
+GO
+INSERT [dbo].[UserUseCases] ([UserId], [CaseId]) VALUES (2, 2020)
+GO
+INSERT [dbo].[UserUseCases] ([UserId], [CaseId]) VALUES (2002, 2020)
+GO
+INSERT [dbo].[UserUseCases] ([UserId], [CaseId]) VALUES (2005, 2020)
+GO
+INSERT [dbo].[UserUseCases] ([UserId], [CaseId]) VALUES (2006, 2020)
+GO
+INSERT [dbo].[UserUseCases] ([UserId], [CaseId]) VALUES (1, 2021)
+GO
+INSERT [dbo].[UserUseCases] ([UserId], [CaseId]) VALUES (2, 2021)
+GO
+INSERT [dbo].[UserUseCases] ([UserId], [CaseId]) VALUES (2002, 2021)
+GO
+INSERT [dbo].[UserUseCases] ([UserId], [CaseId]) VALUES (2005, 2021)
+GO
+INSERT [dbo].[UserUseCases] ([UserId], [CaseId]) VALUES (2006, 2021)
+GO
+INSERT [dbo].[UserUseCases] ([UserId], [CaseId]) VALUES (1, 2022)
+GO
+INSERT [dbo].[UserUseCases] ([UserId], [CaseId]) VALUES (2, 2022)
+GO
+INSERT [dbo].[UserUseCases] ([UserId], [CaseId]) VALUES (2002, 2022)
+GO
+INSERT [dbo].[UserUseCases] ([UserId], [CaseId]) VALUES (2005, 2022)
+GO
+INSERT [dbo].[UserUseCases] ([UserId], [CaseId]) VALUES (2006, 2022)
+GO
+INSERT [dbo].[UserUseCases] ([UserId], [CaseId]) VALUES (1, 2023)
+GO
+INSERT [dbo].[UserUseCases] ([UserId], [CaseId]) VALUES (2, 2023)
+GO
+INSERT [dbo].[UserUseCases] ([UserId], [CaseId]) VALUES (2002, 2023)
+GO
+INSERT [dbo].[UserUseCases] ([UserId], [CaseId]) VALUES (2005, 2023)
+GO
+INSERT [dbo].[UserUseCases] ([UserId], [CaseId]) VALUES (2006, 2023)
+GO
+INSERT [dbo].[UserUseCases] ([UserId], [CaseId]) VALUES (1, 2024)
+GO
+INSERT [dbo].[UserUseCases] ([UserId], [CaseId]) VALUES (2, 2024)
+GO
+INSERT [dbo].[UserUseCases] ([UserId], [CaseId]) VALUES (2002, 2024)
+GO
+INSERT [dbo].[UserUseCases] ([UserId], [CaseId]) VALUES (2005, 2024)
+GO
+INSERT [dbo].[UserUseCases] ([UserId], [CaseId]) VALUES (2006, 2024)
+GO
+INSERT [dbo].[UserUseCases] ([UserId], [CaseId]) VALUES (1, 2025)
+GO
+INSERT [dbo].[UserUseCases] ([UserId], [CaseId]) VALUES (2, 2025)
+GO
+INSERT [dbo].[UserUseCases] ([UserId], [CaseId]) VALUES (1, 2026)
+GO
+INSERT [dbo].[UserUseCases] ([UserId], [CaseId]) VALUES (2, 2026)
+GO
+INSERT [dbo].[UserUseCases] ([UserId], [CaseId]) VALUES (1, 2027)
+GO
+INSERT [dbo].[UserUseCases] ([UserId], [CaseId]) VALUES (2, 2027)
+GO
+INSERT [dbo].[UserUseCases] ([UserId], [CaseId]) VALUES (1, 2028)
+GO
+INSERT [dbo].[UserUseCases] ([UserId], [CaseId]) VALUES (2, 2028)
+GO
+INSERT [dbo].[UserUseCases] ([UserId], [CaseId]) VALUES (2002, 2028)
+GO
+INSERT [dbo].[UserUseCases] ([UserId], [CaseId]) VALUES (2005, 2028)
+GO
+INSERT [dbo].[UserUseCases] ([UserId], [CaseId]) VALUES (2006, 2028)
+GO
+INSERT [dbo].[UserUseCases] ([UserId], [CaseId]) VALUES (1, 2029)
+GO
+INSERT [dbo].[UserUseCases] ([UserId], [CaseId]) VALUES (2, 2029)
+GO
+INSERT [dbo].[UserUseCases] ([UserId], [CaseId]) VALUES (2002, 2029)
+GO
+INSERT [dbo].[UserUseCases] ([UserId], [CaseId]) VALUES (2005, 2029)
+GO
+INSERT [dbo].[UserUseCases] ([UserId], [CaseId]) VALUES (2006, 2029)
+GO
+INSERT [dbo].[UserUseCases] ([UserId], [CaseId]) VALUES (1, 2030)
+GO
+INSERT [dbo].[UserUseCases] ([UserId], [CaseId]) VALUES (2, 2030)
+GO
+INSERT [dbo].[UserUseCases] ([UserId], [CaseId]) VALUES (1, 2031)
+GO
+INSERT [dbo].[UserUseCases] ([UserId], [CaseId]) VALUES (2, 2031)
+GO
+INSERT [dbo].[UserUseCases] ([UserId], [CaseId]) VALUES (1, 2032)
+GO
+INSERT [dbo].[UserUseCases] ([UserId], [CaseId]) VALUES (2, 2032)
+GO
+INSERT [dbo].[UserUseCases] ([UserId], [CaseId]) VALUES (1, 2033)
+GO
+INSERT [dbo].[UserUseCases] ([UserId], [CaseId]) VALUES (2, 2033)
+GO
+INSERT [dbo].[UserUseCases] ([UserId], [CaseId]) VALUES (2002, 2033)
+GO
+INSERT [dbo].[UserUseCases] ([UserId], [CaseId]) VALUES (2005, 2033)
+GO
+INSERT [dbo].[UserUseCases] ([UserId], [CaseId]) VALUES (2006, 2033)
+GO
+SET IDENTITY_INSERT [dbo].[Votes] ON 
+GO
+INSERT [dbo].[Votes] ([Id], [UserId], [PostId], [CommentId], [TypeId], [VotedAt]) VALUES (1011, 1, NULL, 1013, 2, CAST(N'2022-06-07T10:15:07.3066667' AS DateTime2))
+GO
+INSERT [dbo].[Votes] ([Id], [UserId], [PostId], [CommentId], [TypeId], [VotedAt]) VALUES (1012, 1, 3, NULL, 2, CAST(N'2022-06-07T10:23:53.8833333' AS DateTime2))
+GO
+SET IDENTITY_INSERT [dbo].[Votes] OFF
+GO
+SET IDENTITY_INSERT [dbo].[VoteTypes] ON 
+GO
+INSERT [dbo].[VoteTypes] ([Id], [Type]) VALUES (2, N'Downvote')
+GO
+INSERT [dbo].[VoteTypes] ([Id], [Type]) VALUES (1, N'Upvote')
+GO
+SET IDENTITY_INSERT [dbo].[VoteTypes] OFF
+GO
+SET ANSI_PADDING ON
+GO
+/****** Object:  Index [IX_AuditLogs_UseCaseName]    Script Date: 11/06/2022 12:14:32 ******/
+CREATE NONCLUSTERED INDEX [IX_AuditLogs_UseCaseName] ON [dbo].[AuditLogs]
+(
+	[UseCaseName] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+GO
+/****** Object:  Index [IX_AuditLogs_UserId]    Script Date: 11/06/2022 12:14:32 ******/
+CREATE NONCLUSTERED INDEX [IX_AuditLogs_UserId] ON [dbo].[AuditLogs]
+(
+	[UserId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+GO
+/****** Object:  Index [IX_BlogPostCategories_CategoryId]    Script Date: 11/06/2022 12:14:32 ******/
+CREATE NONCLUSTERED INDEX [IX_BlogPostCategories_CategoryId] ON [dbo].[BlogPostCategories]
+(
+	[CategoryId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+GO
+/****** Object:  Index [IX_BlogPostImages_ImageId]    Script Date: 11/06/2022 12:14:32 ******/
+CREATE NONCLUSTERED INDEX [IX_BlogPostImages_ImageId] ON [dbo].[BlogPostImages]
+(
+	[ImageId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+GO
+/****** Object:  Index [IX_BlogPosts_AuthorId]    Script Date: 11/06/2022 12:14:32 ******/
+CREATE NONCLUSTERED INDEX [IX_BlogPosts_AuthorId] ON [dbo].[BlogPosts]
+(
+	[AuthorId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+GO
+SET ANSI_PADDING ON
+GO
+/****** Object:  Index [IX_BlogPosts_Title]    Script Date: 11/06/2022 12:14:32 ******/
+CREATE NONCLUSTERED INDEX [IX_BlogPosts_Title] ON [dbo].[BlogPosts]
+(
+	[Title] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+GO
+SET ANSI_PADDING ON
+GO
+/****** Object:  Index [IX_Categories_Name]    Script Date: 11/06/2022 12:14:32 ******/
+CREATE UNIQUE NONCLUSTERED INDEX [IX_Categories_Name] ON [dbo].[Categories]
+(
+	[Name] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+GO
+/****** Object:  Index [IX_Comments_ParentCommentId]    Script Date: 11/06/2022 12:14:32 ******/
+CREATE NONCLUSTERED INDEX [IX_Comments_ParentCommentId] ON [dbo].[Comments]
+(
+	[ParentCommentId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+GO
+/****** Object:  Index [IX_Comments_PostId]    Script Date: 11/06/2022 12:14:32 ******/
+CREATE NONCLUSTERED INDEX [IX_Comments_PostId] ON [dbo].[Comments]
+(
+	[PostId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+GO
+/****** Object:  Index [IX_Comments_UserId]    Script Date: 11/06/2022 12:14:32 ******/
+CREATE NONCLUSTERED INDEX [IX_Comments_UserId] ON [dbo].[Comments]
+(
+	[UserId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+GO
+SET ANSI_PADDING ON
+GO
+/****** Object:  Index [IX_Roles_Name]    Script Date: 11/06/2022 12:14:32 ******/
+CREATE UNIQUE NONCLUSTERED INDEX [IX_Roles_Name] ON [dbo].[Roles]
+(
+	[Name] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+GO
+SET ANSI_PADDING ON
+GO
+/****** Object:  Index [IX_Users_Email]    Script Date: 11/06/2022 12:14:32 ******/
+CREATE UNIQUE NONCLUSTERED INDEX [IX_Users_Email] ON [dbo].[Users]
+(
+	[Email] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+GO
+/****** Object:  Index [IX_Users_RoleId]    Script Date: 11/06/2022 12:14:32 ******/
+CREATE NONCLUSTERED INDEX [IX_Users_RoleId] ON [dbo].[Users]
+(
+	[RoleId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+GO
+SET ANSI_PADDING ON
+GO
+/****** Object:  Index [IX_Users_Username]    Script Date: 11/06/2022 12:14:32 ******/
+CREATE UNIQUE NONCLUSTERED INDEX [IX_Users_Username] ON [dbo].[Users]
+(
+	[Username] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+GO
+/****** Object:  Index [IX_UserUseCases_CaseId]    Script Date: 11/06/2022 12:14:32 ******/
+CREATE NONCLUSTERED INDEX [IX_UserUseCases_CaseId] ON [dbo].[UserUseCases]
+(
+	[CaseId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+GO
+/****** Object:  Index [IX_Votes_CommentId]    Script Date: 11/06/2022 12:14:32 ******/
+CREATE NONCLUSTERED INDEX [IX_Votes_CommentId] ON [dbo].[Votes]
+(
+	[CommentId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+GO
+/****** Object:  Index [IX_Votes_PostId]    Script Date: 11/06/2022 12:14:32 ******/
+CREATE NONCLUSTERED INDEX [IX_Votes_PostId] ON [dbo].[Votes]
+(
+	[PostId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+GO
+/****** Object:  Index [IX_Votes_TypeId]    Script Date: 11/06/2022 12:14:32 ******/
+CREATE NONCLUSTERED INDEX [IX_Votes_TypeId] ON [dbo].[Votes]
+(
+	[TypeId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+GO
+/****** Object:  Index [IX_Votes_UserId]    Script Date: 11/06/2022 12:14:32 ******/
+CREATE NONCLUSTERED INDEX [IX_Votes_UserId] ON [dbo].[Votes]
+(
+	[UserId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+GO
+SET ANSI_PADDING ON
+GO
+/****** Object:  Index [IX_VoteTypes_Type]    Script Date: 11/06/2022 12:14:32 ******/
+CREATE UNIQUE NONCLUSTERED INDEX [IX_VoteTypes_Type] ON [dbo].[VoteTypes]
+(
+	[Type] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+GO
+ALTER TABLE [dbo].[AuditLogs] ADD  DEFAULT (getdate()) FOR [ExecutedAt]
+GO
+ALTER TABLE [dbo].[BlogPosts] ADD  DEFAULT (getdate()) FOR [CreatedAt]
+GO
+ALTER TABLE [dbo].[Comments] ADD  DEFAULT (getdate()) FOR [CommentedAt]
+GO
+ALTER TABLE [dbo].[Users] ADD  DEFAULT ((1)) FOR [Active]
+GO
+ALTER TABLE [dbo].[Users] ADD  DEFAULT ((2)) FOR [RoleId]
+GO
+ALTER TABLE [dbo].[Users] ADD  DEFAULT (getdate()) FOR [CreatedAt]
+GO
+ALTER TABLE [dbo].[Votes] ADD  DEFAULT (getdate()) FOR [VotedAt]
+GO
+ALTER TABLE [dbo].[BlogPostCategories]  WITH CHECK ADD  CONSTRAINT [FK_BlogPostCategories_BlogPosts_PostId] FOREIGN KEY([PostId])
+REFERENCES [dbo].[BlogPosts] ([Id])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[BlogPostCategories] CHECK CONSTRAINT [FK_BlogPostCategories_BlogPosts_PostId]
+GO
+ALTER TABLE [dbo].[BlogPostCategories]  WITH CHECK ADD  CONSTRAINT [FK_BlogPostCategories_Categories_CategoryId] FOREIGN KEY([CategoryId])
+REFERENCES [dbo].[Categories] ([Id])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[BlogPostCategories] CHECK CONSTRAINT [FK_BlogPostCategories_Categories_CategoryId]
+GO
+ALTER TABLE [dbo].[BlogPostImages]  WITH CHECK ADD  CONSTRAINT [FK_BlogPostImages_BlogPosts_PostId] FOREIGN KEY([PostId])
+REFERENCES [dbo].[BlogPosts] ([Id])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[BlogPostImages] CHECK CONSTRAINT [FK_BlogPostImages_BlogPosts_PostId]
+GO
+ALTER TABLE [dbo].[BlogPostImages]  WITH CHECK ADD  CONSTRAINT [FK_BlogPostImages_Images_ImageId] FOREIGN KEY([ImageId])
+REFERENCES [dbo].[Images] ([Id])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[BlogPostImages] CHECK CONSTRAINT [FK_BlogPostImages_Images_ImageId]
+GO
+ALTER TABLE [dbo].[BlogPosts]  WITH CHECK ADD  CONSTRAINT [FK_BlogPosts_Users_AuthorId] FOREIGN KEY([AuthorId])
+REFERENCES [dbo].[Users] ([Id])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[BlogPosts] CHECK CONSTRAINT [FK_BlogPosts_Users_AuthorId]
+GO
+ALTER TABLE [dbo].[Comments]  WITH CHECK ADD  CONSTRAINT [FK_Comments_BlogPosts_PostId] FOREIGN KEY([PostId])
+REFERENCES [dbo].[BlogPosts] ([Id])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[Comments] CHECK CONSTRAINT [FK_Comments_BlogPosts_PostId]
+GO
+ALTER TABLE [dbo].[Comments]  WITH CHECK ADD  CONSTRAINT [FK_Comments_Comments_ParentCommentId] FOREIGN KEY([ParentCommentId])
+REFERENCES [dbo].[Comments] ([Id])
+GO
+ALTER TABLE [dbo].[Comments] CHECK CONSTRAINT [FK_Comments_Comments_ParentCommentId]
+GO
+ALTER TABLE [dbo].[Comments]  WITH CHECK ADD  CONSTRAINT [FK_Comments_Users_UserId] FOREIGN KEY([UserId])
+REFERENCES [dbo].[Users] ([Id])
+GO
+ALTER TABLE [dbo].[Comments] CHECK CONSTRAINT [FK_Comments_Users_UserId]
+GO
+ALTER TABLE [dbo].[Users]  WITH CHECK ADD  CONSTRAINT [FK_Users_Roles_RoleId] FOREIGN KEY([RoleId])
+REFERENCES [dbo].[Roles] ([Id])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[Users] CHECK CONSTRAINT [FK_Users_Roles_RoleId]
+GO
+ALTER TABLE [dbo].[UserUseCases]  WITH CHECK ADD  CONSTRAINT [FK_UserUseCases_UseCases_CaseId] FOREIGN KEY([CaseId])
+REFERENCES [dbo].[UseCases] ([Id])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[UserUseCases] CHECK CONSTRAINT [FK_UserUseCases_UseCases_CaseId]
+GO
+ALTER TABLE [dbo].[UserUseCases]  WITH CHECK ADD  CONSTRAINT [FK_UserUseCases_Users_UserId] FOREIGN KEY([UserId])
+REFERENCES [dbo].[Users] ([Id])
+GO
+ALTER TABLE [dbo].[UserUseCases] CHECK CONSTRAINT [FK_UserUseCases_Users_UserId]
+GO
+ALTER TABLE [dbo].[Votes]  WITH CHECK ADD  CONSTRAINT [FK_Votes_BlogPosts_PostId] FOREIGN KEY([PostId])
+REFERENCES [dbo].[BlogPosts] ([Id])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[Votes] CHECK CONSTRAINT [FK_Votes_BlogPosts_PostId]
+GO
+ALTER TABLE [dbo].[Votes]  WITH CHECK ADD  CONSTRAINT [FK_Votes_Comments_CommentId] FOREIGN KEY([CommentId])
+REFERENCES [dbo].[Comments] ([Id])
+GO
+ALTER TABLE [dbo].[Votes] CHECK CONSTRAINT [FK_Votes_Comments_CommentId]
+GO
+ALTER TABLE [dbo].[Votes]  WITH CHECK ADD  CONSTRAINT [FK_Votes_Users_UserId] FOREIGN KEY([UserId])
+REFERENCES [dbo].[Users] ([Id])
+GO
+ALTER TABLE [dbo].[Votes] CHECK CONSTRAINT [FK_Votes_Users_UserId]
+GO
+ALTER TABLE [dbo].[Votes]  WITH CHECK ADD  CONSTRAINT [FK_Votes_VoteTypes_TypeId] FOREIGN KEY([TypeId])
+REFERENCES [dbo].[VoteTypes] ([Id])
+GO
+ALTER TABLE [dbo].[Votes] CHECK CONSTRAINT [FK_Votes_VoteTypes_TypeId]
+GO
+/****** Object:  StoredProcedure [dbo].[AddNewLogRecord]    Script Date: 11/06/2022 12:14:32 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+create procedure [dbo].[AddNewLogRecord]
+@useCaseName nvarchar(450),
+@username nvarchar(max),
+@userId int,
+@executedAt datetime2(7),
+@data nvarchar(max),
+@isAuthorized bit
+as
+begin
+insert into AuditLogs(UseCaseName,Username,UserId,ExecutedAt,Data,IsAuthorized)
+values(@useCaseName,@username,@userId,@executedAt,@data,@isAuthorized)
+
+end
+GO
+/****** Object:  StoredProcedure [dbo].[GetUseCaseLogs]    Script Date: 11/06/2022 12:14:32 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+create procedure [dbo].[GetUseCaseLogs]
+@dateFrom datetime,
+@dateTo datetime,
+@useCaseName nvarchar(30),
+@username nvarchar(max)
+as
+begin
+select UseCaseName,Username,UserId,ExecutedAt,IsAuthorized,Data 
+from AuditLogs
+where ExecutedAt between @dateFrom and @dateTo AND
+	  (@useCaseName is null OR UseCaseName like '%'+@useCaseName+'%') AND
+	  (@username is null OR Username like '%'+@username+'%')
+end
+GO
+USE [master]
+GO
+ALTER DATABASE [blog] SET  READ_WRITE 
+GO
