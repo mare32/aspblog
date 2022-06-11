@@ -117,14 +117,12 @@ namespace Blog.Api.Controllers
             if(dto.CategoryIds == null || dto.CategoryIds.Count() < 1 )
             {
                 return UnprocessableEntity(new { error = "Izaberite makar jednu kategoriju." });
-                //throw new InvalidOperationException("Izaberite makar jednu kategoriju.");
             }
-            imgAlt = string.IsNullOrEmpty(dto.ImageAlt) ? "altNotSpecified" : dto.ImageAlt;
+            imgAlt = string.IsNullOrEmpty(dto.ImageAlt) ? "Slika nije ucitana" : dto.ImageAlt;
 
             var imeSlike = guid + extension;
             var putanja = Path.Combine("wwwroot", "images", imeSlike);
             
-            //
             CreateBlogPostDto noviDto = new CreateBlogPostDto
             {
                 Title = dto.Title,

@@ -17,10 +17,17 @@ namespace Blog.Implementation.Validators
             _context = context;
             RuleFor( x => x.CommentText).Cascade(CascadeMode.Stop)
                                         .NotEmpty().WithMessage("Polje komentara ne sme ostati prazno");
-            RuleFor(x => x.ParentId).Must(x => context.Comments.Any(y => y.Id == x))
+            RuleFor(x => x.ParentId).Must(parentIdCheck)
                                     .WithMessage("Roditeljski komentar ne postoji");
             RuleFor(x => x.BlogPostId).Must(x => context.BlogPosts.Any(y => y.Id == x))
                                       .WithMessage("Blog Post sa tim identifikatorom ne postoji");
+        }
+        bool parentIdCheck(int? id)
+        {
+            if (id == 0 || id == null)
+                return true;
+            bool parentExists = _context.Comments.Any(y => y.Id == id);
+            return parentExists;
         }
     }
 }

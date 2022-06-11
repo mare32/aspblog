@@ -28,8 +28,6 @@ namespace Blog.Implementation.Validators
                 .Cascade(CascadeMode.Stop)
                 .MinimumLength(3).WithMessage("Username mora imati makar 3 karaktera")
                 .MaximumLength(40).WithMessage("Username ne sme imati vise od 40 karaktera")
-                .Matches("^(?=[a-zA-Z0-9._]{3,12}$)(?!.*[_.]{2})[^_.].*[^_.]$")
-                .WithMessage("Korisničko ime nije ispravnog formata.")
                 .Must(UsernameNotInUse).WithMessage("Username {PropertyValue} je vec u upotrebi");
             RuleFor(x => x.Email)
                 .Cascade(CascadeMode.Stop)

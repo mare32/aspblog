@@ -7,12 +7,11 @@ using System.Threading.Tasks;
 
 namespace Blog.Application.UseCases.DTO
 {
-    public class CreateBlogPostDto : BaseDto
+    public class CreateBlogPostDto
     {
         public string Title { get; set; }
         public string BlogPostContent { get; set; }
         public int? AuthorId { get; set; }
-        public int CoverImageId { get; set; }
         public IEnumerable<int> CategoryIds { get; set; }
         public string ImageSrc { get; set; }
         public string ImageAlt { get; set; }

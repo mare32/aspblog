@@ -53,12 +53,14 @@ namespace Blog.Implementation.UseCases.Commands
             Context.UserUseCases.AddRange(userUsecases);
             Context.SaveChanges();
 
-            _sender.Send(new MessageDto
-            {
-                Title = "Successful registration!",
-                To = request.Email,
-                Body = "Welcome to the blog kind " + request.Username + "\n Click the link down below to activate your account\n*Generated Activation Link*"
-            });
+
+            // Mejl svakako ne radi, pa da ne usporava aplikaciju
+            //_sender.Send(new MessageDto
+            //{
+            //    Title = "Successful registration!",
+            //    To = request.Email,
+            //    Body = "Welcome to the blog kind " + request.Username + "\n Click the link down below to activate your account\n*Generated Activation Link*"
+            //});
         }
     }
 }
